@@ -1,0 +1,10 @@
+C:\Users\nikol\source\repos\Econ\Econ\bin\Release\Econ.exe.config
+C:\Users\nikol\source\repos\Econ\Econ\bin\Release\Econ.exe
+C:\Users\nikol\source\repos\Econ\Econ\bin\Release\Econ.pdb
+C:\Users\nikol\source\repos\Econ\Econ\bin\Release\SdlDotNet.dll
+C:\Users\nikol\source\repos\Econ\Econ\bin\Release\Tao.Sdl.dll
+C:\Users\nikol\source\repos\Econ\Econ\obj\Release\Econ.csprojAssemblyReference.cache
+C:\Users\nikol\source\repos\Econ\Econ\obj\Release\Econ.csproj.CoreCompileInputs.cache
+C:\Users\nikol\source\repos\Econ\Econ\obj\Release\Econ.csproj.CopyComplete
+C:\Users\nikol\source\repos\Econ\Econ\obj\Release\Econ.exe
+C:\Users\nikol\source\repos\Econ\Econ\obj\Release\Econ.pdb
