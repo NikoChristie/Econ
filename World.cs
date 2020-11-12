@@ -5,6 +5,8 @@ using System.Drawing;
 namespace Econ {
     public static class World {
 
+		public enum Terrain { Sea, Low, Mid, High, Hill, Mountain };
+
 		public const int width = Program.width;
 		public const int height = Program.height;
 
@@ -14,10 +16,9 @@ namespace Econ {
 		
         public enum Week { Monday, Tuesday, Wedsday, Thursday, Friday, Saturday, Sunday };
 
-        public static Week day = Week.Monday;
+        public static Week day = Week.Sunday;
 
         static World() {
-
 			for (int i = 0; i < 10; i++) {
 				World.countries.Add(new Country("Country " + i, Color.FromArgb(Program.rand.Next(255), Program.rand.Next(255), Program.rand.Next(255))));
 			}
@@ -49,8 +50,8 @@ namespace Econ {
 					map[tile.x, tile.y].owner = country;
 
 					if (Program.rand.Next(100) < 50) {
-
-						for (int i = 0; i < 5; i++) {
+						int factories = Program.rand.Next(1, 10);
+						for (int i = 0; i < factories; i++) {
 							switch (Program.rand.Next(7)) {
 								case 0:
 									tile.factories.Add(new Factory(tile, Market.products.A, null, 1, 10));
@@ -121,7 +122,66 @@ namespace Econ {
 
 			return grid;
 		}
+		/*
+		 private static Tile[,] generateMap(int width, int height) {
 
+			Tile[,] grid = new Tile[width, height];
+
+			int x = width / 2;
+			int y = height / 2;
+
+			for (int i = 0; i < (width * height); i++) { // main map build loop
+				if (grid[x, y] == null) {
+					grid[x, y] = new Province(x, y);
+				}
+				grid[x, y].terrain += Program.rand.NextDouble();
+
+				x += Program.rand.Next(3) - 1;
+				y += Program.rand.Next(3) - 1;
+
+				x = x >= width ? width - 1 : x < 0 ? 0 : x;
+				y = y >= height ? height - 1 : y < 0 ? 0 : y;
+
+			}
+
+			for (y = 0; y < height; y++) { // create sea tiles
+				for (x = 0; x < width; x++) {
+					if (grid[x, y] == null) {
+						grid[x, y] = new Tile(x, y);
+						grid[x, y].type = Tile.Terrain.Sea;
+					}
+				}
+			}
+
+			foreach (Tile tile in grid) {
+				if (tile.terrain <= 1) tile.type = Tile.Terrain.Low;
+				else if (tile.terrain <= 2) tile.type = Tile.Terrain.Mid;
+				else if (tile.terrain <= 3) tile.type = Tile.Terrain.High;
+				else if (tile.terrain <= 4) tile.type = Tile.Terrain.Hill;
+				else tile.type = Tile.Terrain.Mountain;
+			}
+
+			foreach (Tile tile in grid) {
+				if (tile.type == Tile.Terrain.Sea) {
+					for (y = -1; y < 2; y += 2) {
+						for (x = -1; x < 2; x += 2) {
+
+							try {
+								if (grid[tile.x + x, tile.y + y].GetType() == typeof(Province)) {
+									Province province = (Province)grid[tile.x + x, tile.y + y]; // cast to province
+									province.costal = true; // make costal province
+								}
+							}
+							catch (System.IndexOutOfRangeException) { }
+
+						}
+					}
+				}
+			}
+			return grid;
+		}
+		 
+		 */
 		private static void landDistribute(bool debug = false/*Program.debug*/) {
 			List<Tile> tiles = new List<Tile>();
 

@@ -23,12 +23,24 @@ namespace Econ {
 		public static Surface Screen;
 		public static bool debug = false;
 		public static Random rand = new Random();
+
+		#region Sprites
 		public static Sprite beeg = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\beeg_yoshi.bmp");
 		public static Sprite factory = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\Factory.bmp");
 		public static Sprite caravan = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\CaravanLand.bmp");
+		public static Sprite plus  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\+.bmp");
+		public static Sprite one   = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\1.bmp");
+		public static Sprite two   = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\2.bmp");
+		public static Sprite three = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\3.bmp");
+		public static Sprite four  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\4.bmp");
+		public static Sprite five  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\5.bmp");
+		public static Sprite six   = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\6.bmp");
+		public static Sprite seven = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\7.bmp");
+		public static Sprite eight = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\8.bmp");
+		public static Sprite nine  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\9.bmp");
+        #endregion Sprites
 
-
-		public static class Camera {
+        public static class Camera {
 			public static float x = 0.00f;
 			public static float y = 0.00f;
 			public static float size_x = Program.wwidth;
@@ -41,21 +53,21 @@ namespace Econ {
 			Mouse.ShowCursor = true;
 			Screen = Video.SetVideoMode(wwidth, wheight, 32, false, false, false, true);
 			
-			Events.TargetFps = 120;
+			Events.TargetFps = 60;
+			
 			Events.Quit += (QuitEventHandler);
 			Events.Tick += (TickEventHandler);
 			Events.KeyboardDown += (KeyBoardDownHandler);
+			Events.MouseButtonDown += (MouseButtonDownHandler);
 			Events.Run();
 		}
 		private static void QuitEventHandler(object sender, QuitEventArgs args) {
 			Events.QuitApplication();
 		}
 		private static void TickEventHandler(object sender, TickEventArgs args) {
-			frame = (frame + 1) % Events.TargetFps; // every second
+			frame = (frame + 1) % Events.Fps; // every second
 			if (World.map != null) {
-				Screen.Blit(beeg, Mouse.MousePosition);
 				PrintMap();
-				Screen.Blit(beeg, Mouse.MousePosition);
 				Screen.Update();
 			}
 			if(frame == 0) World.tick();
@@ -63,12 +75,9 @@ namespace Econ {
 
 		}
 
-		private static void KeyBoardDownHandler(object sender, KeyboardEventArgs args) {
+		private static void KeyBoardDownHandler(object sender, KeyboardEventArgs args) { // completely broken
 
 			if (args.Key == Key.Escape) Screen.Close();
-			//if (GetKey(olc::Key::G).bPressed) this->grid = !this->grid;
-			//if (GetKey(olc::Key::B).bPressed) this->border = !this->border;
-			//if (GetKey(olc::Key::T).bPressed) this->trade = !this->trade;
 
 			if (args.Key == Key.S) {
 				Camera.y += 1;// this->frame * fElapsedTime;
@@ -98,6 +107,131 @@ namespace Econ {
 				}
 			}
 		}
+
+		private static void MouseButtonDownHandler(object sender, MouseButtonEventArgs args) {
+			if (args.Button == MouseButton.PrimaryButton) {
+				int x = Mouse.MousePosition.X / wpixel_width;
+				int y = Mouse.MousePosition.Y / wpixel_height;
+
+				if (World.map[x, y].owner != null) {
+					Console.ForegroundColor = ColorToConsoleColor(World.map[x, y].owner.color);
+
+					Tile tile = World.map[x, y];
+
+					Console.WriteLine($"Tile[{x}, {y}] has {tile.factories.Count} factories");
+
+					foreach (Factory factory in tile.factories) {
+
+						Console.ForegroundColor = ColorToConsoleColor(World.map[x, y].owner.color);
+						Console.BackgroundColor = ConsoleColor.Black;
+
+						Console.Write("\t" + factory.output + " factory produces " + factory.output + "(" + factory.pool[factory.output] + ") costing ");
+
+						Console.ForegroundColor = ConsoleColor.Green;
+
+						Console.Write(Math.Round(factory.cost(factory.output), 2) + "$");
+
+						Console.ForegroundColor = ColorToConsoleColor(World.map[x, y].owner.color);
+
+						Console.Write(" with ");
+
+						if (factory.input != null) {
+							bool print = false;
+							foreach (KeyValuePair<Market.products, double> i in factory.input) {
+								if (print == false) {
+									print = true;
+								}
+								else {
+									Console.Write(',');
+								}
+								Console.Write(" " + i.Value + " " + i.Key + "(s) (" + factory.pool[i.Key] + "/" + factory.input[i.Key] * factory.location.owner.workhours * factory.population + ")");
+							}
+						}
+						else {
+							Console.Write("nothing");
+						}
+
+						Console.Write(" they have ");
+
+						if (factory.capital > 0) {
+							Console.ForegroundColor = ConsoleColor.Green;
+						}
+						else if (factory.capital < 0) {
+							Console.ForegroundColor = ConsoleColor.Red;
+						}
+						else {
+							Console.ForegroundColor = ConsoleColor.Yellow;
+						}
+
+
+						Console.Write(factory.capital + "$");
+						Console.ForegroundColor = ColorToConsoleColor(tile.owner.color);
+
+
+						if (factory.input != null) {
+
+							//Console.ForegroundColor = ColorToConsoleColor(tile.owner.color);
+							Console.WriteLine();
+
+							Console.Write("\t\torders: ");
+							bool print = false;
+							foreach (KeyValuePair<Market.products, double> i in factory.orders) {
+								if (print == false) {
+									print = true;
+								}
+								else {
+									Console.Write(',');
+								}
+								Console.Write(i.Key + " (" + factory.orders[i.Key] + ")");
+							}
+						}
+
+						Console.ResetColor();
+
+						Console.WriteLine();
+					}
+
+					Console.ResetColor();
+				}
+			}
+		}
+
+		public static ConsoleColor ColorToConsoleColor(Color color) {
+
+			Dictionary<ConsoleColor, Color> consoleColors = new Dictionary<ConsoleColor, Color>() {
+				{ ConsoleColor.Black,       Color.FromArgb(0,     0,   0) },
+				{ ConsoleColor.DarkBlue,    Color.FromArgb(0,     0, 128) },
+				{ ConsoleColor.DarkGreen,   Color.FromArgb(0,   128,   0) },
+				{ ConsoleColor.DarkCyan,    Color.FromArgb(0,   128, 128) },
+				{ ConsoleColor.DarkRed,     Color.FromArgb(128,   0,   0) },
+				{ ConsoleColor.DarkMagenta, Color.FromArgb(128,   0, 128) },
+				{ ConsoleColor.DarkYellow,  Color.FromArgb(128, 128,   0) },
+				{ ConsoleColor.Gray,        Color.FromArgb(192, 192, 192) },
+				{ ConsoleColor.DarkGray,    Color.FromArgb(128, 128, 128) },
+				{ ConsoleColor.Blue,        Color.FromArgb(0,     0, 255) },
+				{ ConsoleColor.Green,       Color.FromArgb(0,   255,   0) },
+				{ ConsoleColor.Cyan,        Color.FromArgb(0,   255, 255) },
+				{ ConsoleColor.Red,         Color.FromArgb(255,   0,   0) },
+				{ ConsoleColor.Magenta,     Color.FromArgb(255,   0, 255) },
+				{ ConsoleColor.Yellow,      Color.FromArgb(255,   0,   0) },
+				{ ConsoleColor.White,       Color.FromArgb(255, 255, 255) }
+			};
+
+			ConsoleColor closest = ConsoleColor.White;
+			
+			foreach (KeyValuePair<ConsoleColor, Color> i in consoleColors) {
+				if (ColorSubtract(i.Value, color) < ColorSubtract(consoleColors[closest], color)) {
+					closest = i.Key;
+				}
+			}
+			return closest;
+
+		}
+
+		private static int ColorSubtract(Color a, Color b) {
+			return Math.Abs(a.R - b.R) + Math.Abs(a.G - b.G) + Math.Abs(a.B - b.B);
+		}
+
 		public static void PrintMap() {
 			try {
 				Program.Screen.Fill(new Rectangle(0, 0, Program.wwidth, Program.wheight), Color.DarkBlue);
@@ -115,11 +249,10 @@ namespace Econ {
 
 						if (World.map[xx, yy].owner != null) {
 							Box draw_tile = new Box((short)x, (short)y, (short)(x + (Camera.scale_x * Program.wpixel_width)), (short)(y + (Camera.scale_y * Program.wpixel_height)));
-
+							
 							draw_tile.Draw(Program.Screen, World.map[xx, yy].owner.color, true, true);
 
 							//this->DrawDecal(olc::vf2d(x, y), decal, olc::vf2d(Camera::scale_x / decal->sprite->width, Camera::scale_y / decal->sprite->height), pixel);
-
 							
 							/*
 							if (false && false) { // <-----------------------------------------
@@ -168,18 +301,55 @@ namespace Econ {
 								}
 							}
 							*/
-							if (true) {
+							if (true) { // factory
 
 
 								if (World.map[xx, yy].factories.Count > 0) {
-									
 									Screen.Blit(factory, new Point(x, y));
+									Sprite number;
+									switch (World.map[xx, yy].factories.Count) {
+										case 1:
+											number = one;
+											break;
+										case 2:
+											number = two;
+											break;
+										case 3:
+											number = three;
+											break;
+										case 4:
+											number = four;
+											break;
+										case 5:
+											number = five;
+											break;
+										case 6:
+											number = six;
+											break;
+										case 7:
+											number = seven;
+											break;
+										case 8:
+											number = eight;
+											break;
+										case 9:
+											number = nine;
+											break;
+										default:
+											if (World.map[xx, yy].factories.Count < 1) {
+												Console.ForegroundColor = ConsoleColor.Red;
+												throw new Exception($"World.map[{xx}, {yy}] has {World.map[xx, yy].factories.Count}");
+											}
+											else number = plus; break;
+									}
+									Screen.Blit(number, new Point(x, y));
+									draw_tile.Draw(Program.Screen, Color.FromArgb(50, World.map[xx, yy].owner.color.R, World.map[xx, yy].owner.color.G, World.map[xx, yy].owner.color.B), true, true);
 								}
 							}
 
 
 						}
-						
+						// forgot to draw land tile numbskull
 						
 						xx++;
 					}
@@ -188,10 +358,14 @@ namespace Econ {
 
 				}
 
-				if (true) {
+				if (true) { // trader
 					foreach (Country country in World.countries) {
 						foreach (Trader trader in country.traders) {
-							if(World.map[trader.x, trader.y].factories.Count == 0) Screen.Blit(caravan, new Point(trader.x * Program.wpixel_width, trader.y * Program.wpixel_height));
+							if (World.map[trader.x, trader.y].factories.Count == 0) {
+								Screen.Blit(caravan, new Point(trader.x * Program.wpixel_width, trader.y * Program.wpixel_height));
+								Box tint = new Box(new Point(trader.x * Program.wpixel_width, trader.y * Program.wpixel_height), caravan.Size);
+								tint.Draw(Program.Screen, Color.FromArgb(50, trader.home.location.owner.color.R, trader.home.location.owner.color.G, trader.home.location.owner.color.B), true, true);
+							}
 						}
 					}
 				}
@@ -203,7 +377,7 @@ namespace Econ {
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine($"{e.Message} {e.StackTrace}");
 				Console.ReadLine();
-				System.Environment.Exit(-1);
+				Environment.Exit(-1);
 			}
 		}
 
