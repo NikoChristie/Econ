@@ -26,8 +26,8 @@ namespace Econ {
 
 		#region Sprites
 		public static Sprite beeg = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\beeg_yoshi.bmp");
-		public static Sprite factory = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\Factory.bmp");
-		public static Sprite caravan = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\CaravanLand.bmp");
+		public static MaskedSprite factory = new MaskedSprite(@"C:\Users\nikol\source\repos\Econ\Econ\Factory.bmp", new Box[] { new Box(new Point(1, 2), new Size(4, 12)), new Box(new Point(5, 7), new Size(10, 8))});
+		public static MaskedSprite caravan = new MaskedSprite(@"C:\Users\nikol\source\repos\Econ\Econ\CaravanLand.bmp", new Box[] { new Box(new Point(1, 3), new Size(10, 10)), new Box(new Point(11, 11), new Size(4, 1)), new Box(new Point(3, 12), new Size(3, 2)) });
 		public static Sprite plus  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\+.bmp");
 		public static Sprite one   = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\1.bmp");
 		public static Sprite two   = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\2.bmp");
@@ -114,6 +114,7 @@ namespace Econ {
 				int y = Mouse.MousePosition.Y / wpixel_height;
 
 				if (World.map[x, y].owner != null) {
+					Console.Clear();
 					Console.ForegroundColor = ColorToConsoleColor(World.map[x, y].owner.color);
 
 					Tile tile = World.map[x, y];
@@ -196,7 +197,7 @@ namespace Econ {
 			}
 		}
 
-		public static ConsoleColor ColorToConsoleColor(Color color) {
+		public static ConsoleColor ColorToConsoleColor(Color color, bool black = false) {
 
 			Dictionary<ConsoleColor, Color> consoleColors = new Dictionary<ConsoleColor, Color>() {
 				{ ConsoleColor.Black,       Color.FromArgb(0,     0,   0) },
@@ -224,7 +225,7 @@ namespace Econ {
 					closest = i.Key;
 				}
 			}
-			return closest;
+			return !black ? (closest.Equals(ConsoleColor.Black) ? ConsoleColor.DarkGray : closest) : closest;
 
 		}
 
@@ -305,7 +306,8 @@ namespace Econ {
 
 
 								if (World.map[xx, yy].factories.Count > 0) {
-									Screen.Blit(factory, new Point(x, y));
+									//Screen.Blit(factory, new Point(x, y));
+									factory.Blit(Program.Screen, new Point(x, y), shade(World.map[xx, yy].owner.color, 0.50f), 200);
 									Sprite number;
 									switch (World.map[xx, yy].factories.Count) {
 										case 1:
@@ -343,7 +345,8 @@ namespace Econ {
 											else number = plus; break;
 									}
 									Screen.Blit(number, new Point(x, y));
-									draw_tile.Draw(Program.Screen, Color.FromArgb(50, World.map[xx, yy].owner.color.R, World.map[xx, yy].owner.color.G, World.map[xx, yy].owner.color.B), true, true);
+									
+									//draw_tile.Draw(Program.Screen, Color.FromArgb(50, World.map[xx, yy].owner.color.R, World.map[xx, yy].owner.color.G, World.map[xx, yy].owner.color.B), true, true);
 								}
 							}
 
@@ -362,9 +365,12 @@ namespace Econ {
 					foreach (Country country in World.countries) {
 						foreach (Trader trader in country.traders) {
 							if (World.map[trader.x, trader.y].factories.Count == 0) {
-								Screen.Blit(caravan, new Point(trader.x * Program.wpixel_width, trader.y * Program.wpixel_height));
-								Box tint = new Box(new Point(trader.x * Program.wpixel_width, trader.y * Program.wpixel_height), caravan.Size);
-								tint.Draw(Program.Screen, Color.FromArgb(50, trader.home.location.owner.color.R, trader.home.location.owner.color.G, trader.home.location.owner.color.B), true, true);
+
+								//Screen.Blit(caravan, new Point(trader.x * Program.wpixel_width, trader.y * Program.wpixel_height));
+								caravan.Blit(Program.Screen, new Point(trader.x * Program.wpixel_width, trader.y * Program.wpixel_height), trader.home.location.owner.color, 200);
+								//Screen.AlphaBlending = false;
+								//Box tint = new Box(new Point(trader.x * Program.wpixel_width, trader.y * Program.wpixel_height), caravan.Size);
+								//tint.Draw(Program.Screen, Color.FromArgb(50, trader.home.location.owner.color.R, trader.home.location.owner.color.G, trader.home.location.owner.color.B), true, true);
 							}
 						}
 					}
@@ -372,6 +378,7 @@ namespace Econ {
 
 				Program.Screen.Update();
 			}
+			
 			catch (Exception e) {
 				Console.ResetColor();
 				Console.ForegroundColor = ConsoleColor.Red;
@@ -379,6 +386,21 @@ namespace Econ {
 				Console.ReadLine();
 				Environment.Exit(-1);
 			}
+		}
+		// shade newR = currentR * (1 - shade_factor)
+		// tint  newR = currentR + (255 - currentR) * tint_factor
+		public static Color shade(Color color, float shade) {
+			
+			return Color.FromArgb( (int)(color.R * (1 - shade)), (int)(color.G * (1 - shade)), (int)(color.B * (1 - shade))  );
+		}
+
+		//public static Color tint()
+
+		public static ConsoleColor ComparisonColor(double a, double b, ConsoleColor gt = ConsoleColor.Green, ConsoleColor eq = ConsoleColor.Yellow, ConsoleColor ls = ConsoleColor.Red) {
+			if (a > b) return gt;
+			else if (a < b) return ls;
+			else if (a == b) return eq;
+			else return ConsoleColor.White;
 		}
 
 		public static void DrawLineStraight(int x, int y, int x_end, int y_end, int width, int height, Color color) { // height and width parameters dont do squat

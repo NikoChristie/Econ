@@ -12,7 +12,7 @@ namespace Econ {
 		public List<TradeDeal> tradeDeals = new List<TradeDeal>();
 		public List<Trader> traders = new List<Trader>();
 		public readonly Color color;
-		public int workhours = 40; // ! workhours a week
+		public int workhours;// = 40; // ! workhours a week
 		public float minimum_wage = 15.00f;
 		public Pathfind.node[,] tradeGrid;
 
@@ -22,6 +22,7 @@ namespace Econ {
 		public Country(string name, Color color) {
 			this.name = name;
 			this.color = color;
+			this.workhours = Program.rand.Next(20, 84);
 
 			foreach (Market.products i in Enum.GetValues(typeof(Market.products))) {
 				this.tradeDemand.Add(i, new List<Buy>());

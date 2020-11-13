@@ -52,6 +52,7 @@
     <Compile Include="Factory.cs" />
     <Compile Include="Market.cs" />
     <Compile Include="MarketEntity.cs" />
+    <Compile Include="MaskedSprite.cs" />
     <Compile Include="Pathfinding.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Province.cs" />
@@ -64,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="beeg_yoshi.bmp" />
-    <Content Include="CaravanLand.bmp" />
     <Content Include="Factory.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

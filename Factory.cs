@@ -67,9 +67,9 @@ namespace Econ {
 		}
 
 		public void produce() {
-
+			if (this.population < 1) return;
 			// # get price
-			this.price += (this.population * this.location.owner.workhours) + this.operation_cost; // price = (workers * workhours) + spending cost
+			this.price = (this.population * this.location.owner.workhours) + this.operation_cost; // price = (workers * workhours) + spending cost
 
 			// Production Amount
 			double production = this.location.owner.workhours * (this.population * this.complexity); // production = max

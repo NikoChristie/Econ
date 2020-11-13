@@ -16,7 +16,7 @@ namespace Econ {
 		
         public enum Week { Monday, Tuesday, Wedsday, Thursday, Friday, Saturday, Sunday };
 
-        public static Week day = Week.Sunday;
+        public static Week day = Week.Saturday;
 
         static World() {
 			for (int i = 0; i < 10; i++) {

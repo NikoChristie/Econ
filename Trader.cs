@@ -72,8 +72,10 @@ namespace Econ {
 
 				this.goal.pool[this.product] += this.amount; // # give factory product
 
-				this.home.capital += this.home.cost(this.product) * (float)this.amount; // # pay supplier (supplier gains money)
-				this.goal.capital -= this.home.cost(this.product) * (float)this.amount; // # pay supplier (buyer loses money)
+				float price = this.home.cost(this.product) * (float)this.amount;
+
+				this.home.capital += price; // # pay supplier (supplier gains money)
+				this.goal.capital -= price; // # pay supplier (buyer loses money)
 
 				this.goal.operation_cost += this.home.cost(this.product) * (float)this.amount; // # add amount payed to buyers operation cost
 				this.goal.orders[this.product] -= this.amount; // # remove amount ordered from order
@@ -81,9 +83,13 @@ namespace Econ {
 				//Console.WriteLine("{0} += {1} * {2}\n{3} -= {4} * {5}", this.home.capital, this.home.cost(this.product), this.amount, this.goal.capital, this.home.cost(this.product), this.amount);
 				//Console.ReadLine();
 
-				if (Program.debug) {
-					Console.ForegroundColor = ConsoleColor.Magenta;
-					Console.WriteLine(this.amount + " " + this.product + "(s) have been delivered to [" + this.x + "," + this.y + "]");
+				if (false) {
+					Console.ForegroundColor = Program.ColorToConsoleColor(this.home.location.owner.color);
+					Console.Write(this.amount + " " + this.product + "(s) have been delivered to ");
+					Console.ForegroundColor = Program.ColorToConsoleColor(this.goal.location.owner.color);
+					Console.Write("[" + this.x + "," + this.y + "] ");
+					Console.ForegroundColor = ConsoleColor.Green;
+					Console.WriteLine(" for " + Math.Round(price, 2) + "$ (" + Math.Round(price/this.amount, 2) + "$ each )");
 					Console.ResetColor();
 				}
 
