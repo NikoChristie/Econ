@@ -13,7 +13,7 @@ namespace Econ {
 		public List<Trader> traders = new List<Trader>();
 		public readonly Color color;
 		public int workhours;// = 40; // ! workhours a week
-		public float minimum_wage = 15.00f;
+		public float minimum_wage = (float)Program.rand.Next(1, 15);
 		public Pathfind.node[,] tradeGrid;
 
 		public Dictionary<Market.products, List<Sell>> tradeSupply = new Dictionary<Market.products, List<Sell>>();
@@ -127,13 +127,6 @@ namespace Econ {
 									
 								}
 								if (end) break;
-								/*
-								if (tradeGrid[x, y] == null) {
-									if (World.map[x, y].owner != null) {
-										tradeGrid[x, y].cost = 0;
-									}
-								}
-								*/
 							}
 						}
 						else {
@@ -151,6 +144,140 @@ namespace Econ {
 				}
 			}
 		}
+
+		#region Pop
+
+		public int this[List<Tile> tiles = null, Culture religion = null, Culture ethnicity = null, bool? gender = null, int? age = null, World.Jobs? job = null] {
+			get {
+				return this.sum(tiles == null ? this.tiles : tiles, religion, ethnicity, gender, age, job);
+			}
+			set {
+				if (value < 0) {
+					for (int i = 0; i < Math.Abs(value); i++) {
+						this.remove(tiles == null ? this.tiles : tiles, religion, ethnicity, gender, age, job);
+					}
+				}
+				else {
+					for (int i = 0; i < Math.Abs(value); i++) {
+						this.append(tiles == null ? this.tiles : tiles, religion, ethnicity, gender, age, job);
+					}
+				}
+			}
+		}
+
+		public int this[List<Tile> tiles = null, Culture religion = null, Culture ethnicity = null, int? gender = null, int? age = null, World.Jobs? job = null] {
+			get {
+				return this.sum(tiles == null ? this.tiles : tiles, religion, ethnicity, gender != 0, age, job);
+			}
+			set {
+				if (value < 0) {
+					for (int i = 0; i < Math.Abs(value); i++) {
+						this.remove(tiles == null ? this.tiles : tiles, religion, ethnicity, gender != 0, age, job);
+					}
+				}
+				else {
+					for (int i = 0; i < Math.Abs(value); i++) {
+						this.append(tiles == null ? this.tiles : tiles, religion, ethnicity, gender != 0, age, job);
+					}
+				}
+			}
+		}
+
+		public int this[List<Group> groups] {
+			get {
+				int sum = 0;
+
+				foreach (Group group in groups) {
+					sum += this[group];
+				}
+
+				return sum;
+			}
+			set {
+				foreach (Group group in groups) { // ! fix
+					if (value < 0) {
+						for (int i = 0; i < Math.Abs(value); i++) {
+							this.remove(new List<Tile>() { group.tile }, group.religion, group.ethnicity, group.gender, group.age, group.job);
+						}
+					}
+					else {
+						for (int i = 0; i < Math.Abs(value); i++) {
+							this.append(new List<Tile>() { group.tile }, group.religion, group.ethnicity, group.gender, group.age, group.job);
+						}
+					}
+				}
+			}
+		}
+
+		public int this[Group group] {
+			get {
+
+				return this.sum(new List<Tile>() { group.tile }, group.religion, group.ethnicity, group.gender, group.age, group.job);
+
+			}
+			set {
+
+				if (value < 0) {
+					for (int i = 0; i < Math.Abs(value); i++) {
+						this.remove(new List<Tile>() { group.tile }, group.religion, group.ethnicity, group.gender, group.age, group.job);
+					}
+				}
+				else {
+					for (int i = 0; i < Math.Abs(value); i++) {
+						this.append(new List<Tile>() { group.tile }, group.religion, group.ethnicity, group.gender, group.age, group.job);
+					}
+				}
+
+			}
+		}
+
+		private void remove(List<Tile> tile, Culture religion = null, Culture ethnicity = null, bool? gender = null, int? age = null, World.Jobs? job = null) {
+
+
+			Dictionary<Tile, int> array = new Dictionary<Tile, int>();
+			foreach (Tile i in tile) {
+				array.Add(i, i[religion, ethnicity, gender, age, job]);
+			}
+
+			Program.WeightedRandom<Tile>(array)[religion, ethnicity, gender, age, job] = -1;
+
+		}
+
+		private void append(List<Tile> tile, Culture religion = null, Culture ethnicity = null, bool? gender = null, int? age = null, World.Jobs? job = null) {
+			List<Tile> list = new List<Tile>();
+
+			foreach (Tile i in tile) {
+				for (int j = 0; j < i[religion, ethnicity, gender, age, job]; j++) {
+					list.Add(i);
+				}
+			}
+
+			list[Program.rand.Next(list.Count)][religion, ethnicity, gender, age, job] = 1;
+		}
+
+		public void birthday() {
+			foreach (Tile i in this.tiles) {
+				i.birthday();
+			}
+		}
+
+		public void reproduce() {
+			foreach (Tile i in this.tiles) {
+				i.reproduce();
+			}
+		}
+
+		private int sum(List<Tile> tile, Culture religion = null, Culture ethnicity = null, bool? gender = null, int? age = null, World.Jobs? job = null) {
+			int sum = 0;
+
+			foreach (Tile i in tile) {
+				sum += i[religion, ethnicity, gender, age, job];
+			}
+
+			return sum;
+		}
+
+		#endregion Pop
 
 	}
 }

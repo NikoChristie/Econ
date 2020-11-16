@@ -15,7 +15,7 @@ namespace Econ {
 
 		private float price = 1.00f;
 
-		public float wages;
+		public float wages = 0;
 
 		public int capacity;
 		public int population;
@@ -26,7 +26,7 @@ namespace Econ {
 			this.output = output;
 			this.input = input;
 			this.capacity = capacity;
-			this.population = capacity; // ! TODO: fix later
+			this.population = 0;
 			this.job = job;
 
 			this.pool.Add(this.output, 0);
@@ -69,7 +69,7 @@ namespace Econ {
 		}
 
 		public void produce() {
-			if (this.population < 1) return;
+			if (this.population == 0) return;
 			// # get price
 			this.price = (this.population * this.location.owner.workhours) + this.operation_cost; // price = (workers * workhours) + spending cost
 
@@ -98,6 +98,8 @@ namespace Econ {
 			// this.price = this.price > 0.00f ? this.price : 0.01f;
 
 			this.pool[this.output] += production;
+
+			this.wages = Math.Max(this.wages, this.location.owner.minimum_wage);
 
 			this.operation_cost = 0.00f; // # reset operation_cost
 		}

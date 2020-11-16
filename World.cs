@@ -11,8 +11,10 @@ namespace Econ {
 		public const int width = Program.width;
 		public const int height = Program.height;
 
+		public static List<Culture> religion = new List<Culture>();
+		public static List<Culture> ethnicity = new List<Culture>();
 		public static List<Country> countries = new List<Country>();
-        public static Tile[,] map = World.generateMap(width, height);
+		public static Tile[,] map;// = World.generateMap(width, height);
         public static DateTime date = new DateTime(1, 1, 1);
 		
         public enum Week { Monday, Tuesday, Wedsday, Thursday, Friday, Saturday, Sunday };
@@ -20,9 +22,18 @@ namespace Econ {
         public static Week day = Week.Saturday;
 
         static World() {
+
+			for (int i = 0; i < 2; i++) { // religion innit
+				religion.Add(new Culture(i, "religion " + i));
+				ethnicity.Add(new Culture(i, "ethnicity " + i));
+			}
+
+			map = World.generateMap(width, height);
+
 			for (int i = 0; i < 10; i++) {
 				World.countries.Add(new Country("Country " + i, Color.FromArgb(Program.rand.Next(255), Program.rand.Next(255), Program.rand.Next(255))));
 			}
+
 			foreach (Country country in countries) {
 
 				if (country.tiles.Count > 1) {

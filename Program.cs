@@ -50,6 +50,7 @@ namespace Econ {
 		}
 
 		public static void Main(string[] args) {
+
 			Mouse.ShowCursor = true;
 			Screen = Video.SetVideoMode(wwidth, wheight, 32, false, false, false, true);
 			
@@ -114,87 +115,153 @@ namespace Econ {
 				int y = Mouse.MousePosition.Y / wpixel_height;
 
 				if (World.map[x, y].owner != null) {
-					Console.Clear();
-					Console.ForegroundColor = ColorToConsoleColor(World.map[x, y].owner.color);
-
-					Tile tile = World.map[x, y];
-
-					Console.WriteLine($"Tile[{x}, {y}] has {tile.factories.Count} factories");
-
-					foreach (Factory factory in tile.factories) {
-
-						Console.ForegroundColor = ColorToConsoleColor(World.map[x, y].owner.color);
-						Console.BackgroundColor = ConsoleColor.Black;
-
-						Console.Write("\t" + factory.output + " factory produces " + factory.output + "(" + factory.pool[factory.output] + ") costing ");
-
-						Console.ForegroundColor = ConsoleColor.Green;
-
-						Console.Write(Math.Round(factory.cost(factory.output), 2) + "$");
-
-						Console.ForegroundColor = ColorToConsoleColor(World.map[x, y].owner.color);
-
-						Console.Write(" with ");
-
-						if (factory.input != null) {
-							bool print = false;
-							foreach (KeyValuePair<Market.products, double> i in factory.input) {
-								if (print == false) {
-									print = true;
-								}
-								else {
-									Console.Write(',');
-								}
-								Console.Write(" " + i.Value + " " + i.Key + "(s) (" + factory.pool[i.Key] + "/" + factory.input[i.Key] * factory.location.owner.workhours * factory.population + ")");
-							}
-						}
-						else {
-							Console.Write("nothing");
-						}
-
-						Console.Write(" they have ");
-
-						if (factory.capital > 0) {
-							Console.ForegroundColor = ConsoleColor.Green;
-						}
-						else if (factory.capital < 0) {
-							Console.ForegroundColor = ConsoleColor.Red;
-						}
-						else {
-							Console.ForegroundColor = ConsoleColor.Yellow;
-						}
-
-
-						Console.Write(factory.capital + "$");
-						Console.ForegroundColor = ColorToConsoleColor(tile.owner.color);
-
-
-						if (factory.input != null) {
-
-							//Console.ForegroundColor = ColorToConsoleColor(tile.owner.color);
-							Console.WriteLine();
-
-							Console.Write("\t\torders: ");
-							bool print = false;
-							foreach (KeyValuePair<Market.products, double> i in factory.orders) {
-								if (print == false) {
-									print = true;
-								}
-								else {
-									Console.Write(',');
-								}
-								Console.Write(i.Key + " (" + factory.orders[i.Key] + ")");
-							}
-						}
-
-						Console.ResetColor();
-
-						Console.WriteLine();
-					}
-
-					Console.ResetColor();
+					PrintEcon(World.map[x, y]);
 				}
 			}
+			else if (args.Button == MouseButton.SecondaryButton) {
+				int x = Mouse.MousePosition.X / wpixel_width;
+				int y = Mouse.MousePosition.Y / wpixel_height;
+
+				if (World.map[x, y].owner != null) {
+					foreach (Pop pop in World.map[x, y].population) {
+						PrintPop(pop);
+					}
+				}
+			}
+		}
+
+		public static T WeightedRandom<T>(Dictionary<T, int> list) {
+			int sum = 0;
+			foreach (KeyValuePair<T, int> i in list) {
+				sum += i.Value;
+			}
+
+			int index = Program.rand.Next(sum) + 1;
+
+			foreach (KeyValuePair<T, int> i in list) {
+				if (index > i.Value) {
+					index -= i.Value;
+				}
+				else {
+					return i.Key;
+				}
+
+			}
+			throw new Exception("Error: random_index: " + index + " couldn't find a value and is returning null");
+
+		}
+
+		public static void PrintEcon(Tile tile) {
+			Console.Clear();
+			Console.ForegroundColor = ColorToConsoleColor(tile.owner.color);
+
+			Console.WriteLine($"Tile[{tile.x}, {tile.y}] has {tile.factories.Count} factories");
+
+			foreach (Factory factory in tile.factories) {
+
+				Console.ForegroundColor = ColorToConsoleColor(tile.owner.color);
+				Console.BackgroundColor = ConsoleColor.Black;
+
+				Console.Write("\t" + factory.output + " factory, pop : " + factory.population + "/" + factory.capacity + " produces " + factory.output + "(" + factory.pool[factory.output] + ") costing ");
+
+				Console.ForegroundColor = ConsoleColor.Green;
+
+				Console.Write(Math.Round(factory.cost(factory.output), 2) + "$");
+
+				Console.ForegroundColor = ColorToConsoleColor(tile.owner.color);
+
+				Console.Write(" with ");
+
+				if (factory.input != null) {
+					bool print = false;
+					foreach (KeyValuePair<Market.products, double> i in factory.input) {
+						if (print == false) {
+							print = true;
+						}
+						else {
+							Console.Write(',');
+						}
+						Console.Write(" " + i.Value + " " + i.Key + "(s) (" + factory.pool[i.Key] + "/" + factory.input[i.Key] * factory.location.owner.workhours * factory.population + ")");
+					}
+				}
+				else {
+					Console.Write("nothing");
+				}
+
+				Console.Write(" they have ");
+
+				if (factory.capital > 0) {
+					Console.ForegroundColor = ConsoleColor.Green;
+				}
+				else if (factory.capital < 0) {
+					Console.ForegroundColor = ConsoleColor.Red;
+				}
+				else {
+					Console.ForegroundColor = ConsoleColor.Yellow;
+				}
+
+
+				Console.Write(factory.capital + "$");
+				Console.ForegroundColor = ColorToConsoleColor(tile.owner.color);
+
+
+				if (factory.input != null) {
+
+					//Console.ForegroundColor = ColorToConsoleColor(tile.owner.color);
+					Console.WriteLine();
+
+					Console.Write("\t\torders: ");
+					bool print = false;
+					foreach (KeyValuePair<Market.products, double> i in factory.orders) {
+						if (print == false) {
+							print = true;
+						}
+						else {
+							Console.Write(',');
+						}
+						Console.Write(i.Key + " (" + factory.orders[i.Key] + ")");
+					}
+				}
+
+				Console.ResetColor();
+
+				Console.WriteLine();
+			}
+		}
+
+		public static void PrintPop(Pop pop) {
+			Console.WriteLine("\n[" + pop.religion.index + "," + pop.ethnicity.index + "] Population: " + pop[null]);
+			for (int i = 0; i < 2; i++) {
+				switch (i) {
+					case 0:
+						Console.ForegroundColor = ConsoleColor.Magenta;
+						Console.WriteLine("Female: " + pop[i]);
+						break;
+					case 1:
+						Console.ForegroundColor = ConsoleColor.Cyan;
+						Console.WriteLine("Male:   " + pop[i]);
+						break;
+				}
+				for (int j = 0; j < 10; j++) {
+					Console.WriteLine("\tAge " + (j * 10) + ": " + pop[i, j]);
+
+					foreach (World.Jobs k in Enum.GetValues(typeof(World.Jobs))) {
+						if (pop[i, j, k] > 0) Console.WriteLine("\t" + k.ToString() + ": " + pop[i, j, k]);
+					}
+					Console.WriteLine();
+				}
+
+				Console.ResetColor();
+
+				Console.WriteLine("Jobs: ");
+
+				foreach (World.Jobs j in Enum.GetValues(typeof(World.Jobs))) {
+					Console.WriteLine("\t" + j.ToString() + ": " + pop[i, null, j]);
+				}
+
+				Console.WriteLine();
+			}
+			Console.WriteLine("\n");
 		}
 
 		public static ConsoleColor ColorToConsoleColor(Color color, bool black = false) {
@@ -387,6 +454,9 @@ namespace Econ {
 				Environment.Exit(-1);
 			}
 		}
+
+
+
 		// shade newR = currentR * (1 - shade_factor)
 		// tint  newR = currentR + (255 - currentR) * tint_factor
 		public static Color shade(Color color, float shade) {

@@ -49,11 +49,15 @@
   <ItemGroup>
     <Compile Include="Buy.cs" />
     <Compile Include="Country.cs" />
+    <Compile Include="Culture.cs" />
+    <Compile Include="Estate.cs" />
     <Compile Include="Factory.cs" />
+    <Compile Include="Group.cs" />
     <Compile Include="Market.cs" />
     <Compile Include="MarketEntity.cs" />
     <Compile Include="MaskedSprite.cs" />
     <Compile Include="Pathfinding.cs" />
+    <Compile Include="Pop.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Province.cs" />
     <Compile Include="Sell.cs" />
