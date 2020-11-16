@@ -123,7 +123,6 @@ namespace Econ {
 					}
 					Console.ResetColor();
 				}
-				//if (history[i.Key].Count > 1) Console.Write(history[i.Key][history[i.Key].Count - 1] == history[i.Key][history[i.Key].Count - 2] ? '=' : (history[i.Key][history[i.Key].Count - 1] > history[i.Key][history[i.Key].Count - 2] ? '-' : '+'));
 				Console.Write(" : ");
 
 				Console.ForegroundColor = ConsoleColor.DarkGreen;

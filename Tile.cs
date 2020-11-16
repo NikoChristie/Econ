@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,13 +55,53 @@ namespace Econ {
 			if (World.day == World.Week.Monday) {
 
 				this.market_tick();
-				//Console.ReadLine();
 
 			}
 			else if (World.day == World.Week.Friday) {
 				foreach (Factory factory in this.factories) {
 					factory.produce();
 				}
+			}
+		}
+
+		private void hire_tick() {
+
+			Dictionary<World.Jobs, int> jobs = new Dictionary<World.Jobs, int>();
+
+			foreach (World.Jobs i in Enum.GetValues(typeof(World.Jobs))) {
+				jobs.Add(i, 0/* this.population[i] */);
+			}
+
+			// create sorted list of factories by highest wages
+			List<Factory> postings = new List<Factory>();
+			foreach (Factory factory in this.factories) {
+				for (int i = 0; i < postings.Count; i++) {
+					if (factory.wages >= factories[i].wages) { // find factory with wages more than him
+						postings.Insert(i, factory);
+					}
+					else if (i == postings.Count - 1) { // otherwise, pay your workers more you clown
+						postings.Add(factory);
+					}
+				}
+			}
+			
+			while (postings.Count > 0) { // give pops jobs, while jobs exist
+
+				List<Factory> remove = new List<Factory>(); // C# forces my hand here
+
+				foreach (Factory factory in postings) {
+					//int hires = Math.Min(jobs[factory.jobs], factory.population);
+					//jobs[factory.job] -= hires;
+					//factory.population += hires;
+					remove.Add(factory); // remove factory
+
+				}
+
+				// Remove full factories - C# forces my hand here
+				foreach (Factory i in remove) {
+					postings.Remove(i);
+				}
+				
 			}
 		}
 

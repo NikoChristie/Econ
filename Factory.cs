@@ -9,6 +9,7 @@ namespace Econ {
 
 		public readonly Market.products output;
 		public Dictionary<Market.products, double> input;
+		public readonly World.Jobs job;
 
 		public double complexity;
 
@@ -19,13 +20,14 @@ namespace Econ {
 		public int capacity;
 		public int population;
 
-		public Factory(Tile location, Market.products output, Dictionary<Market.products, double> input, double complexity, int capacity) {
+		public Factory(Tile location, Market.products output, Dictionary<Market.products, double> input, double complexity, int capacity, World.Jobs job) {
 			this.complexity = complexity;
 			this.location = location;
 			this.output = output;
 			this.input = input;
 			this.capacity = capacity;
 			this.population = capacity; // ! TODO: fix later
+			this.job = job;
 
 			this.pool.Add(this.output, 0);
 			if (this.input != null) {

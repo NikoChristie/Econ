@@ -6,6 +6,7 @@ namespace Econ {
     public static class World {
 
 		public enum Terrain { Sea, Low, Mid, High, Hill, Mountain };
+		public enum Jobs { A, B, C, D, E, F, G };
 
 		public const int width = Program.width;
 		public const int height = Program.height;
@@ -54,30 +55,30 @@ namespace Econ {
 						for (int i = 0; i < factories; i++) {
 							switch (Program.rand.Next(7)) {
 								case 0:
-									tile.factories.Add(new Factory(tile, Market.products.A, null, 1, 10));
+									tile.factories.Add(new Factory(tile, Market.products.A, null, 1, 10, Jobs.A));
 									break;
 
 								case 1:
-									tile.factories.Add(new Factory(tile, Market.products.B, null, 1, 10));
+									tile.factories.Add(new Factory(tile, Market.products.B, null, 1, 10, Jobs.B));
 									break;
 
 								case 2:
-									tile.factories.Add(new Factory(tile, Market.products.C, null, 1, 10));
+									tile.factories.Add(new Factory(tile, Market.products.C, null, 1, 10, Jobs.C));
 									break;
 
 								case 3:
-									tile.factories.Add(new Factory(tile, Market.products.D, null, 1, 10));
+									tile.factories.Add(new Factory(tile, Market.products.D, null, 1, 10, Jobs.D));
 									break;
 
 								case 4:
-									tile.factories.Add(new Factory(tile, Market.products.E, new Dictionary<Market.products, double>() { { Market.products.A, 2 }, { Market.products.B, 2 } }, 1, 10));
+									tile.factories.Add(new Factory(tile, Market.products.E, new Dictionary<Market.products, double>() { { Market.products.A, 2 }, { Market.products.B, 2 } }, 1, 10, Jobs.E));
 									break;
 
 								case 5:
-									tile.factories.Add(new Factory(tile, Market.products.F, new Dictionary<Market.products, double>() { { Market.products.C, 2 }, { Market.products.D, 2 } }, 1, 10));
+									tile.factories.Add(new Factory(tile, Market.products.F, new Dictionary<Market.products, double>() { { Market.products.C, 2 }, { Market.products.D, 2 } }, 1, 10, Jobs.F));
 									break;
 								case 6:
-									tile.factories.Add(new Factory(tile, Market.products.G, new Dictionary<Market.products, double>() { { Market.products.E, 2 }, { Market.products.F, 2 } }, 1, 10));
+									tile.factories.Add(new Factory(tile, Market.products.G, new Dictionary<Market.products, double>() { { Market.products.E, 2 }, { Market.products.F, 2 } }, 1, 10, Jobs.G));
 									break;
 							}
 						}
