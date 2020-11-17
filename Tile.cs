@@ -97,7 +97,7 @@ namespace Econ {
 							postings.Insert(i, factory);
 							break;
 						}
-						else if (i == postings.Count - 1) { // otherwise, pay your workers more you clown
+						else if (i == postings.Count - 1) { // otherwise, pay your workers more you clown, also append factory to end
 							postings.Add(factory);
 						}
 					}
@@ -127,6 +127,18 @@ namespace Econ {
 				}
 				
 			}
+		}
+
+		public float unemployment(World.Jobs job) {
+			float total = this[null, null, null, null, job];
+			float unemployment = total;
+			foreach(Factory factory in factories) {
+				if (factory.job.Equals(job)) {
+					unemployment -= factory.population;
+				}
+
+            }
+			return total == 0 ? 1.00f : (float)Math.Round((unemployment / total), 2);
 		}
 
 		private void market_tick() {

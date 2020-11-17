@@ -93,7 +93,7 @@ namespace Econ {
 				}
 			}
 
-			this.price /= (float)(production > 0 ? production : 1); // price = price / amount produced
+			this.price /= (float)(Math.Max(production, 1)); // price = price / amount produced
 
 			// this.price = this.price > 0.00f ? this.price : 0.01f;
 
