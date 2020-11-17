@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Econ {
 	public class Pop {
 
-		public readonly Country owner;
+		public readonly Tile location;
 		public static List<World.Jobs> jobs_debug = Enum.GetValues(typeof(World.Jobs)).Cast<World.Jobs>().ToList();
 
 		public readonly Culture religion;
@@ -15,11 +15,11 @@ namespace Econ {
 		public readonly Estate estate;
 
 		private List<List<Dictionary<World.Jobs, int>>> population = new List<List<Dictionary<World.Jobs, int>>>();
-		public Pop(Culture religion, Culture ethnicity, Country owner, int pop) {
+		public Pop(Culture religion, Culture ethnicity, Tile location, int pop) {
 
 			this.religion = religion;
 			this.ethnicity = ethnicity;
-			this.owner = owner;
+			this.location = location;
 
 			#region innit
 			for (int i = 0; i < 2; i++) { // Gender

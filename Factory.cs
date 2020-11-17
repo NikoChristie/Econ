@@ -70,6 +70,7 @@ namespace Econ {
 
 		public void produce() {
 			if (this.population == 0) return;
+			this.operation_cost += this.population * this.wages;
 			// # get price
 			this.price = (this.population * this.location.owner.workhours) + this.operation_cost; // price = (workers * workhours) + spending cost
 

@@ -49,7 +49,7 @@ namespace Econ {
 
 			foreach (Culture yy in World.ethnicity) {
 				foreach (Culture xx in World.religion) {
-					this.population[xx.index, yy.index] = new Pop(xx, yy, this.owner, Program.rand.Next(100));
+					this.population[xx.index, yy.index] = new Pop(xx, yy, this, Program.rand.Next(100));
 				}
 			}
 
@@ -129,12 +129,12 @@ namespace Econ {
 			}
 		}
 
-		public float unemployment(World.Jobs job) {
+		public float unemployment(World.Jobs job) { // avaliable jobs / workers
 			float total = this[null, null, null, null, job];
-			float unemployment = total;
+			float unemployment = 0;
 			foreach(Factory factory in factories) {
 				if (factory.job.Equals(job)) {
-					unemployment -= factory.population;
+					unemployment += factory.capacity;
 				}
 
             }

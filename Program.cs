@@ -24,6 +24,7 @@ namespace Econ {
 		public static bool debug = false;
 		public static Random rand = new Random();
 		private static int counter = 0;
+		private static readonly char[] loader = { '/', '-', '\\', '|' };
 
 		#region Sprites
 		public static Sprite beeg = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\beeg_yoshi.bmp");
@@ -53,7 +54,7 @@ namespace Econ {
 		public static void Main(string[] args) {
 
 			Mouse.ShowCursor = true;
-			Screen = Video.SetVideoMode(wwidth, wheight, 32, false, false, false, true);
+			Screen = Video.SetVideoMode(wwidth, wheight, 8, false, false, false, true);
 			
 			Events.TargetFps = 60;
 			
@@ -67,14 +68,14 @@ namespace Econ {
 			Events.QuitApplication();
 		}
 		private static void TickEventHandler(object sender, TickEventArgs args) {
-			if(frame % (Events.Fps / 5) == 0) counter = counter > 5 ? 0 : counter + 1;
+			if(frame % loader.Length == 0)counter = counter < loader.Length - 1 ? counter + 1 : 0;
 			frame = (frame + 1) % Events.Fps; // every second
 			if (World.map != null) {
 				PrintMap();
 				Screen.Update();
 			}
 			if(frame == 0) World.tick();
-			Video.WindowCaption = $"{World.day} at {Events.Fps} fps {(counter == 0 || counter == 2 ? '-' : (counter == 1 ? '/' : ( counter == 2 ? '|' : '\\')))}";
+			Video.WindowCaption = $"{loader[counter]} {World.day} at {Events.Fps} fps";
 
 		}
 
@@ -203,21 +204,21 @@ namespace Econ {
 
 			Console.ResetColor();
 			Console.ForegroundColor = ConsoleColor.Red;
-			Console.WriteLine("Unemployment");
+			Console.WriteLine("Employment");
 			foreach (World.Jobs job in Enum.GetValues(typeof(World.Jobs))) {
 				int workers = tile[null, null, null, null, job];
 				if (workers > 0) {
 					float unemployment = tile.unemployment(job);
 					Console.ForegroundColor = ComparisonColor(unemployment, 1 - 0.045); // 4.5% is considered a good unemployment rate
 					if (unemployment == 0) Console.ForegroundColor = ConsoleColor.Red;
-					Console.WriteLine($"{job} at {tile.unemployment(job) * 100}% ({Math.Round(workers * unemployment, 0)} / {workers})");
+					Console.WriteLine($"{job} at {unemployment * 100}% ({Math.Round(workers * unemployment, 0)} / {workers})");
 				}
 			}
 			Console.ResetColor();
 		}
 
 		public static void PrintPop(Pop pop) {
-			Console.ForegroundColor = ColorToConsoleColor(pop.owner.color);
+			Console.ForegroundColor = ColorToConsoleColor(pop.location.owner.color);
 			Console.WriteLine("\n[" + pop.religion.index + "," + pop.ethnicity.index + "] Population: " + pop[null]);
 			for (int i = 0; i < 2; i++) {
 				switch (i) {
@@ -240,7 +241,7 @@ namespace Econ {
 				}
 
 				Console.ResetColor();
-				Console.ForegroundColor = ColorToConsoleColor(pop.owner.color);
+				Console.ForegroundColor = ColorToConsoleColor(pop.location.owner.color);
 
 				Console.WriteLine("Jobs: ");
 
