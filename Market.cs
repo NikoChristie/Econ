@@ -64,7 +64,8 @@ namespace Econ {
 
 								if (supply_match.partner().Equals(trade_demand)) {
 
-									double amount = trade_demand.amount > supply_match.amount ? supply_match.amount : trade_demand.amount;
+									double amount = Math.Min(supply_match.amount, trade_demand.amount);
+									//trade_demand.amount > supply_match.amount ? supply_match.amount : trade_demand.amount;
 
 									supply_match.amount = amount;
 
@@ -85,7 +86,7 @@ namespace Econ {
 							}
 						}
 
-						// Remove Spent Trade Deals
+						// Remove Spent Trade Deals, C# funny buisness
 
 						foreach (Sell sell in supply_remove) {
 							sell.target.location.owner.tradeSupply[sell.product].Remove(sell);

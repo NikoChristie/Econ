@@ -9,7 +9,7 @@ namespace Econ {
 
 		public readonly int index;
 		public string name;
-		public Dictionary<string, double> ideas = new Dictionary<string, double>() { { "gender", 0 } };
+		public Dictionary<string, double> ideas = new Dictionary<string, double>() { { "gender", 0 } }; // use enum nerd
 
 		public Culture(int index, string name) {
 			this.name = name;

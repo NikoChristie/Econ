@@ -102,6 +102,7 @@ namespace Econ {
 		}
 
 		public static void tick() {
+			//World.date = World.date.AddDays(1);
 			World.day = World.day >= World.Week.Sunday ? World.Week.Monday : World.day + 1;
 
 			Market.tick();

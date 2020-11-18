@@ -8,7 +8,7 @@ namespace Econ {
 	public class Pop {
 
 		public readonly Tile location;
-		public static List<World.Jobs> jobs_debug = Enum.GetValues(typeof(World.Jobs)).Cast<World.Jobs>().ToList();
+		public static List<World.Jobs> jobs_debug = Enum.GetValues(typeof(World.Jobs)).Cast<World.Jobs>().ToList(); // ???
 
 		public readonly Culture religion;
 		public readonly Culture ethnicity;

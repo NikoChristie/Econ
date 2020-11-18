@@ -79,53 +79,42 @@ namespace Econ {
 
 			Dictionary<World.Jobs, int> jobs = new Dictionary<World.Jobs, int>();
 
+			// create sorted list of factories by highest wages
+			Dictionary<World.Jobs, List<Factory>> postings = new Dictionary<World.Jobs, List<Factory>>();
+
 			foreach (World.Jobs i in Enum.GetValues(typeof(World.Jobs))) {
 				jobs.Add(i, this[null, null, null, null, i]);
+				postings.Add(i, new List<Factory>());
 			}
 
-			// create sorted list of factories by highest wages
-			List<Factory> postings = new List<Factory>();
-
-			foreach (Factory factory in this.factories) {
+			foreach (Factory factory in factories) { // clear factory
 				factory.population = 0;
-				if (postings.Count > 0) {
+				postings[factory.job].Add(factory);
+			}
 
-					int length = postings.Count;
+			foreach (World.Jobs job in Enum.GetValues(typeof(World.Jobs))) {
 
-					for (int i = 0; i < length; i++) {
-						if (factory.wages >= factories[i].wages) { // find factory with wages more than him
-							postings.Insert(i, factory);
-							break;
-						}
-						else if (i == postings.Count - 1) { // otherwise, pay your workers more you clown, also append factory to end
-							postings.Add(factory);
+				for (int i = 0; i < postings[job].Count; i++) {
+					if (i < postings[job].Count - 1) {
+						if (postings[job][i].wages < postings[job][i + 1].wages) {
+							Factory temp = postings[job][i];
+							postings[job][i] = postings[job][i + 1];
+							postings[job][i + 1] = temp;
 						}
 					}
 				}
-				else {
-					postings.Add(factory);
-				}
+				
 			}
 
+			foreach (World.Jobs job in Enum.GetValues(typeof(World.Jobs))) {
 
-			
-			while (postings.Count > 0) { // give pops jobs, while jobs exist
-
-				List<Factory> remove = new List<Factory>(); // C# forces my hand here
-
-				foreach (Factory factory in postings) {
+				foreach (Factory factory in postings[job]) {
 					int hires = Math.Min(jobs[factory.job], factory.capacity);
 					jobs[factory.job] -= hires;
 					factory.population += hires;
-					remove.Add(factory); // remove factory
+					//remove.Add(factory); // remove factory
 
 				}
-
-				// Remove full factories - C# forces my hand here
-				foreach (Factory i in remove) {
-					postings.Remove(i);
-				}
-				
 			}
 		}
 

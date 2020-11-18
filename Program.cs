@@ -54,7 +54,7 @@ namespace Econ {
 		public static void Main(string[] args) {
 
 			Mouse.ShowCursor = true;
-			Screen = Video.SetVideoMode(wwidth, wheight, 8, false, false, false, true);
+			Screen = Video.SetVideoMode(wwidth, wheight, 32, false, false, false, true);
 			
 			Events.TargetFps = 60;
 			
@@ -75,7 +75,8 @@ namespace Econ {
 				Screen.Update();
 			}
 			if(frame == 0) World.tick();
-			Video.WindowCaption = $"{loader[counter]} {World.day} at {Events.Fps} fps";
+			Video.WindowCaption = $"{loader[counter]} {World.day} at {Events.Fps} fps { Math.Round(((float)Events.Fps / (float)Math.Max(Events.TargetFps, 1)) * 100, 0) }%";
+			//Video.WindowCaption = $"{loader[counter]} {World.date.Year}-{World.date.Month}-{World.date.Day}-{World.date.DayOfWeek/*World.day*/} at {Events.Fps} fps";
 
 		}
 
@@ -136,7 +137,7 @@ namespace Econ {
 				Console.ForegroundColor = ColorToConsoleColor(tile.owner.color);
 				Console.BackgroundColor = ConsoleColor.Black;
 
-				Console.Write("\t" + factory.output + " factory, pop : " + factory.population + "/" + factory.capacity + " produces " + factory.output + "(" + factory.pool[factory.output] + ") costing ");
+				Console.Write("\t" + factory.output + " factory, pop : " + factory.population + " /" + factory.capacity + " at " + factory.wages + "$/hr (min:" + tile.owner.minimum_wage + "$/hr) produces " + factory.output + "(" + factory.pool[factory.output] + ") costing ");
 
 				Console.ForegroundColor = ConsoleColor.Green;
 

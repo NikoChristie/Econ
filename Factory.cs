@@ -10,12 +10,13 @@ namespace Econ {
 		public readonly Market.products output;
 		public Dictionary<Market.products, double> input;
 		public readonly World.Jobs job;
+		// TODO, add greed factor, which changes amount of surplus value taken by the factory after operation_cost and wages, it will change with the times
 
 		public double complexity;
 
 		private float price = 1.00f;
 
-		public float wages = 0;
+		public float wages;
 
 		public int capacity;
 		public int population;
@@ -28,6 +29,8 @@ namespace Econ {
 			this.capacity = capacity;
 			this.population = 0;
 			this.job = job;
+
+			this.wages = location.owner.minimum_wage;
 
 			this.pool.Add(this.output, 0);
 			if (this.input != null) {
@@ -54,11 +57,15 @@ namespace Econ {
 
 					if (amount_needed > 0) { // max_amount - (current_amount + ordered_amount)
 						this.location.owner.tradeDemand[i.Key].Add(new Buy(i.Key, amount_needed, this));
+						if (this.pool[i.Key] + this.orders[i.Key] > this.input[i.Key] * (this.location.owner.workhours * (this.population * this.complexity))) 
+							throw new Exception($"Error: Amount of ({i.Key}) Owned {(this.pool[i.Key] + this.orders[i.Key])}, is greater than amount needed ({this.input[i.Key] * (this.location.owner.workhours * (this.population * this.complexity))})");
 					}
-
-					if (this.pool[i.Key] + this.orders[i.Key] > this.input[i.Key] * (this.location.owner.workhours * (this.population * this.complexity))) {
-						throw new Exception("Error: Amount of (" + i.Key.ToString() + ") Owned " + (this.pool[i.Key] + this.orders[i.Key]) + ", is greater than amount needed (" + this.input[i.Key] * (this.location.owner.workhours * (this.population * this.complexity)) + ")");
+						/*
+					if (this.pool[i.Key] + this.orders[i.Key] > this.input[i.Key] * (this.location.owner.workhours * (this.population * this.complexity))) { // we have an error caused here because workers change jobs
+						// return goods that aren't needed
+						//throw new Exception("Error: Amount of (" + i.Key.ToString() + ") Owned " + (this.pool[i.Key] + this.orders[i.Key]) + ", is greater than amount needed (" + this.input[i.Key] * (this.location.owner.workhours * (this.population * this.complexity)) + ")");
 					}
+					*/
 
 				}
 			}
@@ -70,9 +77,12 @@ namespace Econ {
 
 		public void produce() {
 			if (this.population == 0) return;
+
+			this.adjust_wages();
+
 			this.operation_cost += this.population * this.wages;
 			// # get price
-			this.price = (this.population * this.location.owner.workhours) + this.operation_cost; // price = (workers * workhours) + spending cost
+			this.price = (this.population * this.location.owner.workhours) + this.operation_cost; // total_price = (workers * workhours) + spending cost
 
 			// Production Amount
 			double production = this.location.owner.workhours * (this.population * this.complexity); // production = max
@@ -102,7 +112,67 @@ namespace Econ {
 
 			this.wages = Math.Max(this.wages, this.location.owner.minimum_wage);
 
+			this.capital -= operation_cost;
+
 			this.operation_cost = 0.00f; // # reset operation_cost
+		}
+		
+		private void adjust_wages() {
+
+			// Problem, you are your own worst enemey
+
+			if (this.population < this.capacity) { // if factory not at capacity
+
+				if (this.location.unemployment(this.job) > 1.00f) { // surplus of jobs
+					// Overbid you closest competitor
+					Factory competitor = null;
+
+					foreach (Factory factory in this.location.factories) {
+						if (!factory.Equals(this)) {
+							if (competitor == null) competitor = factory.wages >= this.wages ? factory : null;
+							else {
+								if (factory.wages >= this.wages) { // greater wages means they are a competition
+									competitor = (factory.wages - this.wages) <= (competitor.wages - this.wages) ? factory : competitor;
+								}
+							}
+						}
+					}
+					if (competitor != null) {
+						this.wages = Math.Max(this.wages, Math.Min(competitor.wages + 1, (float)(((this.location.owner.workhours * (this.capacity * this.complexity)) * this.price) / this.capacity) - this.operation_cost));
+						// new_wages = (value_produces_per_day / full_capacity) - cost
+					}
+					// else you pay your workers the most, good job!
+
+
+				}
+			}
+			else { // factory at capacity
+				if (this.location.unemployment(this.job) < 1.00f) { // surplus of workers
+					// Stoop to the level of your competitor
+					Factory competitor = null;
+
+					foreach (Factory factory in this.location.factories) {
+						if (!factory.Equals(this)) { 
+							if (competitor == null) competitor = factory.wages <= this.wages ? factory : null;
+							else {
+								if (factory.wages <= this.wages) { // greater wages means they are a competition
+									competitor = (factory.wages - this.wages) >= (competitor.wages - this.wages) ? factory : competitor;
+								}
+							}
+						}
+					}
+					if (competitor != null) {
+						this.wages = Math.Min(this.wages, Math.Min(competitor.wages + 1, (float)(((this.location.owner.workhours * (this.capacity * this.complexity)) * this.price) / this.capacity) - this.operation_cost));
+						// new_wages = (value_produces_per_day / full_capacity) - cost
+					}
+					// you are one rat bastard, noone pays their workers less
+
+
+				}
+
+			}
+
+			this.wages = Math.Max(this.wages, this.location.owner.minimum_wage);
 		}
 	}
 }

@@ -13,7 +13,7 @@ namespace Econ {
 		public List<Trader> traders = new List<Trader>();
 		public readonly Color color;
 		public int workhours;// = 40; // ! workhours a week
-		public float minimum_wage = (float)Program.rand.Next(1, 15);
+		public float minimum_wage = 1;//(float)Program.rand.Next(1, 15);
 		public Pathfind.node[,] tradeGrid;
 
 		public Dictionary<Market.products, List<Sell>> tradeSupply = new Dictionary<Market.products, List<Sell>>();
