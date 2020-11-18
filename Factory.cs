@@ -138,7 +138,7 @@ namespace Econ {
 						}
 					}
 					if (competitor != null) {
-						this.wages = Math.Max(this.wages, Math.Min(competitor.wages + 1, (float)(((this.location.owner.workhours * (this.capacity * this.complexity)) * this.price) / this.capacity) - this.operation_cost));
+						this.wages = Math.Max(this.wages, Math.Min(competitor.wages + (float)(competitor.wages * 0.01), (float)(((this.location.owner.workhours * (this.capacity * this.complexity)) * this.price) / this.capacity) - this.operation_cost));
 						// new_wages = (value_produces_per_day / full_capacity) - cost
 					}
 					// else you pay your workers the most, good job!
@@ -162,7 +162,7 @@ namespace Econ {
 						}
 					}
 					if (competitor != null) {
-						this.wages = Math.Min(this.wages, Math.Min(competitor.wages + 1, (float)(((this.location.owner.workhours * (this.capacity * this.complexity)) * this.price) / this.capacity) - this.operation_cost));
+						this.wages = Math.Min(this.wages, Math.Min(competitor.wages + (float)(competitor.wages * 0.01), (float)(((this.location.owner.workhours * (this.capacity * this.complexity)) * this.price) / this.capacity) - this.operation_cost));
 						// new_wages = (value_produces_per_day / full_capacity) - cost
 					}
 					// you are one rat bastard, noone pays their workers less
@@ -173,6 +173,7 @@ namespace Econ {
 			}
 
 			this.wages = Math.Max(this.wages, this.location.owner.minimum_wage);
+			this.wages = (float)Math.Round(this.wages, 2);
 		}
 	}
 }
