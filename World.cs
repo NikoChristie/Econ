@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -56,6 +57,7 @@ namespace Econ {
 
 			landDistribute();
 
+			// Factories
 			foreach (Country country in countries) {
 				if (Program.debug) Console.WriteLine(country.name + " has " + country.tradeDeals.Count + " tradeals(s)");
 				foreach (Tile tile in country.tiles) {
@@ -98,6 +100,15 @@ namespace Econ {
 				}
 
 			}
+
+			// sum of coutnry tiles
+			int counter = 0;
+			foreach (Country country in countries) {
+				counter += country.tiles.Count;
+			}
+			Console.WriteLine($"Total Tiles: {counter} / 2702");
+			//Console.WriteLine(map[0, 0].Serialize());
+			//Thread.Sleep(5000);
 
 		}
 
@@ -195,6 +206,72 @@ namespace Econ {
 		}
 		 
 		 */
+
+		private static Tile[,] generateMapVicky2() {
+
+			Tile[,] grid = new Tile[width, height];
+
+			int x = width / 2;
+			int y = height / 2;
+
+			//int vickyProvinceCounter = 0;
+
+			for (int i = 0; i < 2702;) { // main map build loop (amount of provinces in vicky 2)
+
+				Console.WriteLine(i + " / 2702");
+
+				if (grid[x, y] == null) {
+					grid[x, y] = new Tile(x, y, 0);
+					i++;
+				}
+				grid[x, y].terrain += Program.rand.NextDouble();
+
+				x += Program.rand.Next(3) - 1;
+				y += Program.rand.Next(3) - 1;
+
+				x = x >= width ? width - 1 : x < 0 ? 0 : x;
+				y = y >= height ? height - 1 : y < 0 ? 0 : y;
+
+			}
+
+			for (y = 0; y < height; y++) { // create sea tiles
+				for (x = 0; x < width; x++) {
+					if (grid[x, y] == null) {
+						grid[x, y] = new Tile(x, y, 0);
+						//grid[x, y].type = Tile.Terrain.Sea;
+					}
+				}
+			}
+			/*
+			foreach (Tile tile in grid) {
+				if (tile.terrain <= 1) tile.type = Tile.Terrain.Low;
+				else if (tile.terrain <= 2) tile.type = Tile.Terrain.Mid;
+				else if (tile.terrain <= 3) tile.type = Tile.Terrain.High;
+				else if (tile.terrain <= 4) tile.type = Tile.Terrain.Hill;
+				else tile.type = Tile.Terrain.Mountain;
+			}
+			
+			foreach (Tile tile in grid) {
+				if (tile.terrain == 0) {
+					for (y = -1; y < 2; y += 2) {
+						for (x = -1; x < 2; x += 2) {
+
+							try {
+								if (grid[tile.x + x, tile.y + y].GetType() == typeof(Province)) {
+									Province province = (Province)grid[tile.x + x, tile.y + y]; // cast to province
+									province.costal = true; // make costal province
+								}
+							}
+							catch (System.IndexOutOfRangeException) { }
+
+						}
+					}
+				}
+			}
+			*/
+			return grid;
+		}
+
 		private static void landDistribute(bool debug = false/*Program.debug*/) {
 			List<Tile> tiles = new List<Tile>();
 

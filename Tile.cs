@@ -1,27 +1,24 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Econ {
 	public class Tile : MarketEntity {
 
-		public readonly int x;
-		public readonly int y;
-		public double terrain;
-		public Country owner;
+		public int x { get; }
+		public int y { get; }
+		public double terrain { get; set; }
+		public Country owner { get; set; }
 
 		public Dictionary<Market.products, float> supply = new Dictionary<Market.products, float>();
 		public Dictionary<Market.products, float> demand = new Dictionary<Market.products, float>();
 		public Dictionary<Market.products, float> price = new Dictionary<Market.products, float>();
 
 		public Dictionary<Country, Dictionary<Market.products, double>> mod = new Dictionary<Country, Dictionary<Market.products, double>>();
-		public List<Factory> factories = new List<Factory>();
+		public List<Factory> factories { get; set; } = new List<Factory>();
 
-		public Pop[,] population = new Pop[World.religion.Count, World.ethnicity.Count];
+		public Pop[,] population { get; } = new Pop[World.religion.Count, World.ethnicity.Count];
 
 		public Tile(int x, int y, double terrain) {
 
@@ -53,6 +50,14 @@ namespace Econ {
 				}
 			}
 
+		}
+
+		public Tile(int x, int y, double terrain, Country owner, List<Factory> factories, Pop[,] population) { 
+		
+		}
+
+		public Tile() { 
+		
 		}
 
 		public override float cost(Market.products products) {
@@ -324,5 +329,11 @@ namespace Econ {
 		}
 
 		#endregion Pop
+
+		public string Serialize() {
+			JsonSerializerOptions options = new JsonSerializerOptions();
+			options.WriteIndented = true;
+			return JsonSerializer.Serialize(World.map[this.x, this.y], options);
+		}
 	}
 }

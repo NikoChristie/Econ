@@ -6,9 +6,8 @@ using SdlDotNet.Core;
 using SdlDotNet.Graphics.Primitives;
 using SdlDotNet.Input;
 using SdlDotNet.Graphics.Sprites;
-using System.Collections;
-using System.Drawing.Configuration;
-using System.Runtime.InteropServices;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Econ {
 	public static class Program {
@@ -25,21 +24,22 @@ namespace Econ {
 		public static Random rand = new Random();
 		private static int counter = 0;
 		private static readonly char[] loader = { '/', '-', '\\', '|' };
+		private static DateTime time = DateTime.Now;
 
 		#region Sprites
 		public static Sprite beeg = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\beeg_yoshi.bmp");
-		public static MaskedSprite factory = new MaskedSprite(@"C:\Users\nikol\source\repos\Econ\Econ\Factory.bmp", new Box[] { new Box(new Point(1, 2), new Size(4, 12)), new Box(new Point(5, 7), new Size(10, 8))});
-		public static MaskedSprite caravan = new MaskedSprite(@"C:\Users\nikol\source\repos\Econ\Econ\CaravanLand.bmp", new Box[] { new Box(new Point(1, 3), new Size(10, 10)), new Box(new Point(11, 11), new Size(4, 1)), new Box(new Point(3, 12), new Size(3, 2)) });
-		public static Sprite plus  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\+.bmp");
-		public static Sprite one   = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\1.bmp");
-		public static Sprite two   = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\2.bmp");
-		public static Sprite three = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\3.bmp");
-		public static Sprite four  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\4.bmp");
-		public static Sprite five  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\5.bmp");
-		public static Sprite six   = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\6.bmp");
-		public static Sprite seven = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\7.bmp");
-		public static Sprite eight = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\8.bmp");
-		public static Sprite nine  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\9.bmp");
+		private static MaskedSprite factory = new MaskedSprite(@"C:\Users\nikol\source\repos\Econ\Econ\Factory.bmp", new Box[] { new Box(new Point(1, 2), new Size(4, 12)), new Box(new Point(5, 7), new Size(10, 8))});
+		private  static MaskedSprite caravan = new MaskedSprite(@"C:\Users\nikol\source\repos\Econ\Econ\CaravanLand.bmp", new Box[] { new Box(new Point(1, 3), new Size(10, 10)), new Box(new Point(11, 11), new Size(4, 1)), new Box(new Point(3, 12), new Size(3, 2)) });
+		private  static Sprite plus  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\+.bmp");
+		private  static Sprite one   = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\1.bmp");
+		private  static Sprite two   = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\2.bmp");
+		private  static Sprite three = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\3.bmp");
+		private  static Sprite four  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\4.bmp");
+		private  static Sprite five  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\5.bmp");
+		private  static Sprite six   = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\6.bmp");
+		private  static Sprite seven = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\7.bmp");
+		private  static Sprite eight = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\8.bmp");
+		private  static Sprite nine  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\9.bmp");
         #endregion Sprites
 
         public static class Camera {
@@ -52,7 +52,7 @@ namespace Econ {
 		}
 
 		public static void Main(string[] args) {
-
+			
 			Mouse.ShowCursor = true;
 			Screen = Video.SetVideoMode(wwidth, wheight, 32, false, false, false, true);
 			
@@ -74,8 +74,11 @@ namespace Econ {
 				PrintMap();
 				Screen.Update();
 			}
-			if(frame == 0) World.tick();
-			Video.WindowCaption = $"{loader[counter]} {World.day} at {Events.Fps} fps { Math.Round(((float)Events.Fps / (float)Math.Max(Events.TargetFps, 1)) * 100, 0) }%";
+			if (frame == 0) {
+				World.tick();
+				time = DateTime.Now;
+			}
+			Video.WindowCaption = $"{loader[counter]} {World.day} at {Events.Fps} fps { Math.Round(((float)Events.Fps / (float)Math.Max(Events.TargetFps, 1)) * 100, 0) }% Time Since Last Tick {time.Subtract(DateTime.Now).ToString("fff")}";
 			//Video.WindowCaption = $"{loader[counter]} {World.date.Year}-{World.date.Month}-{World.date.Day}-{World.date.DayOfWeek/*World.day*/} at {Events.Fps} fps";
 
 		}
@@ -91,7 +94,13 @@ namespace Econ {
 				int y = Mouse.MousePosition.Y / wpixel_height;
 
 				if (World.map[x, y].owner != null) {
-					PrintEcon(World.map[x, y]);
+					//PrintEcon(World.map[x, y]);
+					string json = World.map[x, y].Serialize();
+					Console.WriteLine(json);
+					Tile tile = JsonSerializer.Deserialize<Tile>(json);
+					foreach (Factory factory in tile.factories) {
+						Console.WriteLine(factory.wages);
+					}
 				}
 			}
 			else if (args.Button == MouseButton.SecondaryButton) {

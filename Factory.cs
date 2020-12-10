@@ -9,17 +9,17 @@ namespace Econ {
 
 		public readonly Market.products output;
 		public Dictionary<Market.products, double> input;
-		public readonly World.Jobs job;
+		public World.Jobs job { get; }
 		// TODO, add greed factor, which changes amount of surplus value taken by the factory after operation_cost and wages, it will change with the times
 
-		public double complexity;
+		public double complexity { get; set; }
 
-		private float price = 1.00f;
+		private float price { get; set; } = 1.00f;
 
-		public float wages;
+		public float wages { get; set; }
 
-		public int capacity;
-		public int population;
+		public int capacity { get; set; }
+		public int population { get; set; }
 
 		public Factory(Tile location, Market.products output, Dictionary<Market.products, double> input, double complexity, int capacity, World.Jobs job) {
 			this.complexity = complexity;
@@ -39,6 +39,10 @@ namespace Econ {
 					this.orders.Add(i.Key, 0);
 				}
 			}
+		}
+
+		public Factory() { 
+		
 		}
 
 		public override float cost(Market.products products) {

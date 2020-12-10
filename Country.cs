@@ -7,17 +7,21 @@ using System.Threading.Tasks;
 
 namespace Econ {
 	public class Country {
-		public string name;
+		public string name { get; }
 		public List<Tile> tiles = new List<Tile>();
 		public List<TradeDeal> tradeDeals = new List<TradeDeal>();
 		public List<Trader> traders = new List<Trader>();
-		public readonly Color color;
+		public Color color { get; }
 		public int workhours;// = 40; // ! workhours a week
 		public float minimum_wage = (float)Math.Round((float)Program.rand.Next(1, 15) + (float)Program.rand.NextDouble(), 2);
 		public Pathfind.node[,] tradeGrid;
 
 		public Dictionary<Market.products, List<Sell>> tradeSupply = new Dictionary<Market.products, List<Sell>>();
 		public Dictionary<Market.products, List<Buy>> tradeDemand = new Dictionary<Market.products, List<Buy>>();
+
+		public Country() { 
+		
+		}
 
 		public Country(string name, Color color) {
 			this.name = name;

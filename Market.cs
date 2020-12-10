@@ -56,20 +56,18 @@ namespace Econ {
 
 						end = true;
 
-						foreach (Buy trade_demand in country.tradeDemand[trade_list.Key]) { // TODO: add case for nulls
+						foreach (Buy trade_demand in country.tradeDemand[trade_list.Key]) {
 							Sell supply_match = (Sell)trade_demand.partner();
 							if (supply_match != null) {
 
 								end = false; // end = false until all trades.partners == null
 
-								if (supply_match.partner().Equals(trade_demand)) {
+								// if your partner's partner is you
+								if (supply_match.partner().Equals(trade_demand)) { // partners still exist
 
 									double amount = Math.Min(supply_match.amount, trade_demand.amount);
-									//trade_demand.amount > supply_match.amount ? supply_match.amount : trade_demand.amount;
 
-									supply_match.amount = amount;
-
-									supply_match.target.location.owner.traders.Add(new Trader(trade_demand.target, supply_match));
+									//supply_match.amount = amount;
 
 									if (supply_match.amount - amount <= 0) {
 										supply_remove.Add(supply_match);
@@ -82,6 +80,7 @@ namespace Econ {
 										demand_remove.Add(trade_demand);
 									}
 
+									supply_match.target.location.owner.traders.Add(new Trader(trade_demand.target, supply_match)); // add trader
 								}
 							}
 						}
