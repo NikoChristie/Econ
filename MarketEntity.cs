@@ -12,11 +12,11 @@ namespace Econ {
 		//public Dictionary<Market.products, float> supply = new Dictionary<Market.products, float>();
 		//public Dictionary<Market.products, float> demand = new Dictionary<Market.products, float>();
 
-
-		public Tile location;
 		public float capital = 0.00f;
 		public float operation_cost = 0.00f;
 
 		public abstract float cost(Market.products products);
+
+		public abstract Tile location();
 	}
 }

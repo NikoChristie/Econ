@@ -51,3 +51,5 @@ C:\Users\nikol\source\repos\Econ\Econ\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dl
 C:\Users\nikol\source\repos\Econ\Econ\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
 C:\Users\nikol\source\repos\Econ\Econ\obj\Debug\Econ.exe.config
 C:\Users\nikol\source\repos\Econ\Econ\bin\Debug\System.Buffers.dll
+C:\Users\nikol\source\repos\Econ\Econ\bin\Debug\Newtonsoft.Json.dll
+C:\Users\nikol\source\repos\Econ\Econ\bin\Debug\Newtonsoft.Json.xml

@@ -6,8 +6,9 @@ using SdlDotNet.Core;
 using SdlDotNet.Graphics.Primitives;
 using SdlDotNet.Input;
 using SdlDotNet.Graphics.Sprites;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.IO;
 
 namespace Econ {
 	public static class Program {
@@ -86,21 +87,36 @@ namespace Econ {
 		private static void KeyBoardDownHandler(object sender, KeyboardEventArgs args) { // completely broken
 			
 			if (args.Key == Key.Escape) Screen.Close();
+			else if (args.Key == Key.Return) {
+				//World.Save();
+				JsonConvert.DeserializeObject<Save>(File.ReadAllText("save.json")).Load();
+				
+				/*
+				string map_data = "";
+				JsonSerializerOptions options = new JsonSerializerOptions();
+				options.WriteIndented = true;
+
+				foreach (Country country in World.countries) {
+					foreach (Tile tile in country.tiles) {
+						map_data += JsonSerializer.Serialize(tile, options);
+						map_data += "\n";
+					}
+				}
+
+				StreamWriter sw = File.CreateText("map.json");
+				sw.Write(map_data);
+				*/
+			}
 		}
 
 		private static void MouseButtonDownHandler(object sender, MouseButtonEventArgs args) {
+
 			if (args.Button == MouseButton.PrimaryButton) {
 				int x = Mouse.MousePosition.X / wpixel_width;
 				int y = Mouse.MousePosition.Y / wpixel_height;
 
 				if (World.map[x, y].owner != null) {
-					//PrintEcon(World.map[x, y]);
-					string json = World.map[x, y].Serialize();
-					Console.WriteLine(json);
-					Tile tile = JsonSerializer.Deserialize<Tile>(json);
-					foreach (Factory factory in tile.factories) {
-						Console.WriteLine(factory.wages);
-					}
+					PrintEcon(World.map[x, y]);
 				}
 			}
 			else if (args.Button == MouseButton.SecondaryButton) {
@@ -165,7 +181,7 @@ namespace Econ {
 						else {
 							Console.Write(',');
 						}
-						Console.Write(" " + i.Value + " " + i.Key + "(s) (" + factory.pool[i.Key] + "/" + factory.input[i.Key] * factory.location.owner.workhours * factory.population + ")");
+						Console.Write(" " + i.Value + " " + i.Key + "(s) (" + factory.pool[i.Key] + "/" + factory.input[i.Key] * factory.location().owner.workhours * factory.population + ")");
 					}
 				}
 				else {
@@ -434,7 +450,7 @@ namespace Econ {
 							if (World.map[trader.x, trader.y].factories.Count == 0) {
 
 								//Screen.Blit(caravan, new Point(trader.x * Program.wpixel_width, trader.y * Program.wpixel_height));
-								caravan.Blit(Program.Screen, new Point(trader.x * Program.wpixel_width, trader.y * Program.wpixel_height), trader.home.location.owner.color, 200);
+								caravan.Blit(Program.Screen, new Point(trader.x * Program.wpixel_width, trader.y * Program.wpixel_height), trader.home.location().owner.color, 200);
 								//Screen.AlphaBlending = false;
 								//Box tint = new Box(new Point(trader.x * Program.wpixel_width, trader.y * Program.wpixel_height), caravan.Size);
 								//tint.Draw(Program.Screen, Color.FromArgb(50, trader.home.location.owner.color.R, trader.home.location.owner.color.G, trader.home.location.owner.color.B), true, true);

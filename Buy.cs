@@ -17,7 +17,7 @@ namespace Econ {
 
 			double score = 0;
 
-			foreach (TradeDeal tradeDeal in this.target.location.owner.tradeDeals) {
+			foreach (TradeDeal tradeDeal in this.target.location().owner.tradeDeals) {
 				if(tradeDeal.items.Contains(this.product)) {
 					foreach (Sell trade in tradeDeal.recipient.tradeSupply[this.product]) { // ! watch out, "recipient" doesnt make sense in this context
 						double target_score = 0;

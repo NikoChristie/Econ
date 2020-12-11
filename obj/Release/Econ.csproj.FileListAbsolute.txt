@@ -43,3 +43,11 @@ C:\Users\nikol\source\repos\Econ\Econ\bin\Release\ru\Microsoft.Build.Utilities.C
 C:\Users\nikol\source\repos\Econ\Econ\bin\Release\tr\Microsoft.Build.Utilities.Core.resources.dll
 C:\Users\nikol\source\repos\Econ\Econ\bin\Release\zh-Hans\Microsoft.Build.Utilities.Core.resources.dll
 C:\Users\nikol\source\repos\Econ\Econ\bin\Release\zh-Hant\Microsoft.Build.Utilities.Core.resources.dll
+C:\Users\nikol\source\repos\Econ\Econ\bin\Release\System.Buffers.dll
+C:\Users\nikol\source\repos\Econ\Econ\bin\Release\System.Text.Json.dll
+C:\Users\nikol\source\repos\Econ\Econ\bin\Release\System.Numerics.Vectors.dll
+C:\Users\nikol\source\repos\Econ\Econ\bin\Release\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\nikol\source\repos\Econ\Econ\bin\Release\System.Text.Encodings.Web.dll
+C:\Users\nikol\source\repos\Econ\Econ\bin\Release\System.Threading.Tasks.Extensions.dll
+C:\Users\nikol\source\repos\Econ\Econ\bin\Release\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\nikol\source\repos\Econ\Econ\obj\Release\Econ.exe.config

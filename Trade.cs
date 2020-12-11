@@ -32,18 +32,18 @@ namespace Econ {
 				Console.ResetColor();
 				Console.ReadLine();
 			}
-			if (buyer.location.x == supplier.location.x && buyer.location.y == supplier.location.y) return 0; 
-			else return (trade.amount / supplier.cost(trade.product)) * (Math.Abs(buyer.location.x - supplier.location.x) + Math.Abs(buyer.location.y - supplier.location.y));
+			if (buyer.location().x == supplier.location().x && buyer.location().y == supplier.location().y) return 0; 
+			else return (trade.amount / supplier.cost(trade.product)) * (Math.Abs(buyer.location().x - supplier.location().x) + Math.Abs(buyer.location().y - supplier.location().y));
 		}
 
 		public string ToString(bool partner = false) {
 			return "(" + this.product.ToString() + " : " + this.amount + " " + this.GetHashCode() + ") " + (partner == true ? "(Match: " + this.partner().ToString() + ")\n" : "");
 		}
 
-        public override bool Equals(object obj) {
-			Trade other = (Trade)obj;
-			if (this.product == other.product) {
-				if (this.amount == other.amount) {
+        public bool Equals(Trade obj) {
+			//Trade other = (Trade)obj;
+			if (this.product == obj.product) {
+				if (this.amount == obj.amount) {
 					return true;
 				}
 				else return false;

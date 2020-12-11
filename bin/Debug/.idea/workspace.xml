@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="146cd3f2-0433-47fc-a7ba-316ffe8ac6eb" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../App.config" beforeDir="false" afterPath="$PROJECT_DIR$/../../App.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Buy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../Buy.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Country.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../Country.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Econ.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../../Econ.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Factory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../Factory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Market.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../Market.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../MarketEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../MarketEntity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Pop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../Pop.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Sell.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../Sell.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Tile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../Tile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Trade.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../Trade.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Trader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../Trader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../World.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../World.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Econ.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Econ.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Econ.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Econ.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Release/Econ.exe" beforeDir="false" afterPath="$PROJECT_DIR$/../Release/Econ.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Release/Econ.exe.config" beforeDir="false" afterPath="$PROJECT_DIR$/../Release/Econ.exe.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Release/Econ.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../Release/Econ.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../../obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../obj/Debug/Econ.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../../obj/Debug/Econ.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../obj/Debug/Econ.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../obj/Debug/Econ.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../obj/Debug/Econ.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../../obj/Debug/Econ.csprojAssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../obj/Debug/Econ.exe" beforeDir="false" afterPath="$PROJECT_DIR$/../../obj/Debug/Econ.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../obj/Debug/Econ.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../../obj/Debug/Econ.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../obj/Release/Econ.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../../obj/Release/Econ.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../obj/Release/Econ.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../obj/Release/Econ.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../obj/Release/Econ.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../../obj/Release/Econ.csprojAssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../obj/Release/Econ.exe" beforeDir="false" afterPath="$PROJECT_DIR$/../../obj/Release/Econ.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../obj/Release/Econ.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../../obj/Release/Econ.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../packages.config" beforeDir="false" afterPath="$PROJECT_DIR$/../../packages.config" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="1lUSwKNmZWDxj0uCr8l4AkyDxjH" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="146cd3f2-0433-47fc-a7ba-316ffe8ac6eb" name="Default Changelist" comment="" />
+      <created>1607650416506</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1607650416506</updated>
+    </task>
+    <servers />
+  </component>
+</project>

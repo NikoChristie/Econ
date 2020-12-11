@@ -80,7 +80,7 @@ namespace Econ {
 										demand_remove.Add(trade_demand);
 									}
 
-									supply_match.target.location.owner.traders.Add(new Trader(trade_demand.target, supply_match)); // add trader
+									supply_match.target.location().owner.traders.Add(new Trader(trade_demand.target, supply_match)); // add trader
 								}
 							}
 						}
@@ -88,11 +88,11 @@ namespace Econ {
 						// Remove Spent Trade Deals, C# funny buisness
 
 						foreach (Sell sell in supply_remove) {
-							sell.target.location.owner.tradeSupply[sell.product].Remove(sell);
+							sell.target.location().owner.tradeSupply[sell.product].Remove(sell);
 						}
 
 						foreach (Buy buy in demand_remove) {
-							buy.target.location.owner.tradeDemand[buy.product].Remove(buy);
+							buy.target.location().owner.tradeDemand[buy.product].Remove(buy);
 						}
 					}
 

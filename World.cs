@@ -2,6 +2,9 @@
 using System.Threading;
 using System.Collections.Generic;
 using System.Drawing;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.IO;
 
 namespace Econ {
     public static class World {
@@ -9,18 +12,18 @@ namespace Econ {
 		public enum Terrain { Sea, Low, Mid, High, Hill, Mountain };
 		public enum Jobs { A, B, C, D, E, F, G };
 
-		public const int width = Program.width;
-		public const int height = Program.height;
+		public static int width { get; private set; } = Program.width;
+		public static int height { get; private set; } = Program.height;
 
-		public static List<Culture> religion = new List<Culture>();
-		public static List<Culture> ethnicity = new List<Culture>();
-		public static List<Country> countries = new List<Country>();
-		public static Tile[,] map;// = World.generateMap(width, height);
-        public static DateTime date = new DateTime(1, 1, 1);
+		public static List<Culture> religion { get; set; } = new List<Culture>();
+		public static List<Culture> ethnicity { get; set; } = new List<Culture>();
+		public static List<Country> countries { get; set; } = new List<Country>();
+		public static Tile[,] map { get; set; } // = World.generateMap(width, height);
+        public static DateTime date { get; set; } = new DateTime(1, 1, 1);
 		
         public enum Week { Monday, Tuesday, Wedsday, Thursday, Friday, Saturday, Sunday };
 
-        public static Week day = Week.Saturday;
+        public static Week day { get; set; } = Week.Saturday;
 
         static World() {
 
@@ -112,6 +115,10 @@ namespace Econ {
 
 		}
 
+		public static void Size(int width, int height) {
+			World.width = width;
+			World.height = height;
+		}
 		public static void tick() {
 			//World.date = World.date.AddDays(1);
 			World.day = World.day >= World.Week.Sunday ? World.Week.Monday : World.day + 1;
@@ -206,7 +213,17 @@ namespace Econ {
 		}
 		 
 		 */
-
+		/*
+		private static Tile[,] generateMap(string path) {
+			if (path.EndsWith(".json")) {
+				Tile[,] map = new Tile[width, height];
+				countries = JsonSerializer<List<Country>>.Deserialize(path);
+				return map;
+			}
+			else throw new FileNotFoundException();
+			
+		}
+		*/
 		private static Tile[,] generateMapVicky2() {
 
 			Tile[,] grid = new Tile[width, height];
@@ -408,6 +425,20 @@ namespace Econ {
 					tile.owner = country;
 				}
 			}
+		}
+
+		public static void Save() {
+			//JsonSerializerSettings settings = new JsonSerializerSettings();
+
+			JsonSerializerSettings settings = new JsonSerializerSettings {
+				PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+				Formatting = Formatting.Indented
+			};
+			try {
+				StreamWriter sw = File.CreateText("save.json");
+				sw.Write(JsonConvert.SerializeObject(new Save(), settings));
+			}
+			catch (System.IO.IOException) { }
 		}
 
 	}

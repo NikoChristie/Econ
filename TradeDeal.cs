@@ -12,8 +12,10 @@ namespace Econ {
 		public TradeDeal(Country recipient, Market.products[] args) {
 			this.recipient = recipient;
 			this.items = new List<Market.products>();
-			foreach (Market.products i in args) {
-				this.items.Add(i);
+			if (args != null) {
+				foreach (Market.products i in args) {
+					this.items.Add(i);
+				}
 			}
 		}
 	}

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Econ {
 	public class Country {
 		public string name { get; }
-		public List<Tile> tiles = new List<Tile>();
+		public List<Tile> tiles { get; set; } = new List<Tile>();
 		public List<TradeDeal> tradeDeals = new List<TradeDeal>();
 		public List<Trader> traders = new List<Trader>();
 		public Color color { get; }

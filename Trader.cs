@@ -22,16 +22,16 @@ namespace Econ {
 			this.home = trade.target;
 			this.goal = goal;
 
-			this.x = home.location.x;
-			this.y = home.location.y;
+			this.x = home.location().x;
+			this.y = home.location().y;
 
 
 
 			// I think your going my way!
-			foreach (Trader trader in this.home.location.owner.traders) {
+			foreach (Trader trader in this.home.location().owner.traders) {
 				if (trader.path != null) { // traders has been initialised
 					if (trader.x == this.x && trader.y == this.y) {
-						if (trader.goal.location.x == goal.location.x && trader.goal.location.y == goal.location.y) {
+						if (trader.goal.location().x == goal.location().x && trader.goal.location().y == goal.location().y) {
 							this.path = new List<Pathfind.node>();
 							foreach (Pathfind.node node in trader.path) {
 								this.path.Add(node);
@@ -41,9 +41,9 @@ namespace Econ {
 				}
 			}
 
-			if (this.path == null) this.path = Pathfind.pathfind(home.location.toNode(), goal.location.toNode(), this.home.location.owner.tradeGrid); // # pathfind
+			if (this.path == null) this.path = Pathfind.pathfind(home.location().toNode(), goal.location().toNode(), this.home.location().owner.tradeGrid); // # pathfind
 			if (this.path == null) { // still null ? Kill Your Self!
-				this.home.location.owner.traders.Remove(this); // Kill Your Self!
+				this.home.location().owner.traders.Remove(this); // Kill Your Self!
 				return;
 			}
 
@@ -57,7 +57,7 @@ namespace Econ {
 			this.path.RemoveAt(0);
 
 
-			if (Program.debug) Console.WriteLine(this.home.location.owner.name + " Trader[" + this.amount + " " + this.product + "]");
+			if (Program.debug) Console.WriteLine(this.home.location().owner.name + " Trader[" + this.amount + " " + this.product + "]");
 		}
 
 		public void tick() {
@@ -84,16 +84,16 @@ namespace Econ {
 				//Console.ReadLine();
 
 				if (false) {
-					Console.ForegroundColor = Program.ColorToConsoleColor(this.home.location.owner.color);
+					Console.ForegroundColor = Program.ColorToConsoleColor(this.home.location().owner.color);
 					Console.Write(this.amount + " " + this.product + "(s) have been delivered to ");
-					Console.ForegroundColor = Program.ColorToConsoleColor(this.goal.location.owner.color);
+					Console.ForegroundColor = Program.ColorToConsoleColor(this.goal.location().owner.color);
 					Console.Write("[" + this.x + "," + this.y + "] ");
 					Console.ForegroundColor = ConsoleColor.Green;
 					Console.WriteLine(" for " + Math.Round(price, 2) + "$ (" + Math.Round(price/this.amount, 2) + "$ each )");
 					Console.ResetColor();
 				}
 
-				this.home.location.owner.traders.Remove(this); // # kill self
+				this.home.location().owner.traders.Remove(this); // # kill self
 			}
 		}
 	}

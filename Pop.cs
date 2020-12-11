@@ -7,19 +7,25 @@ using System.Threading.Tasks;
 namespace Econ {
 	public class Pop {
 
-		public readonly Tile location;
+		//public readonly Tile location;
 		public static List<World.Jobs> jobs_debug = Enum.GetValues(typeof(World.Jobs)).Cast<World.Jobs>().ToList(); // ???
 
 		public readonly Culture religion;
 		public readonly Culture ethnicity;
 		public readonly Estate estate;
 
+		private readonly int x;
+		private readonly int y;
+
+		public Tile location => World.map[x, y];
+
 		private List<List<Dictionary<World.Jobs, int>>> population = new List<List<Dictionary<World.Jobs, int>>>();
 		public Pop(Culture religion, Culture ethnicity, Tile location, int pop) {
 
 			this.religion = religion;
 			this.ethnicity = ethnicity;
-			this.location = location;
+			this.x = location.x;
+			this.y = location.y;
 
 			#region innit
 			for (int i = 0; i < 2; i++) { // Gender
