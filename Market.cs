@@ -99,11 +99,11 @@ namespace Econ {
 				}
 			}
 
-			info();
+			//info();
 
 		}
 
-		private static void info() {
+		public static void info() {
 			Console.Clear();
 			foreach (KeyValuePair<products, List<float>> i in history) {
 				Console.Write(i.Key.ToString() + " ");

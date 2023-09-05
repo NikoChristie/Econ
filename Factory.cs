@@ -67,7 +67,7 @@ namespace Econ {
 						if (this.pool[i.Key] + this.orders[i.Key] > this.input[i.Key] * (this.location().owner.workhours * (this.population * this.complexity))) 
 							throw new Exception($"Error: Amount of ({i.Key}) Owned {(this.pool[i.Key] + this.orders[i.Key])}, is greater than amount needed ({this.input[i.Key] * (this.location().owner.workhours * (this.population * this.complexity))})");
 					}
-						/*
+					/*
 					if (this.pool[i.Key] + this.orders[i.Key] > this.input[i.Key] * (this.location.owner.workhours * (this.population * this.complexity))) { // we have an error caused here because workers change jobs
 						// return goods that aren't needed
 						//throw new Exception("Error: Amount of (" + i.Key.ToString() + ") Owned " + (this.pool[i.Key] + this.orders[i.Key]) + ", is greater than amount needed (" + this.input[i.Key] * (this.location.owner.workhours * (this.population * this.complexity)) + ")");

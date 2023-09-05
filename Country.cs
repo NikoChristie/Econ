@@ -19,8 +19,8 @@ namespace Econ {
 		public Dictionary<Market.products, List<Sell>> tradeSupply = new Dictionary<Market.products, List<Sell>>();
 		public Dictionary<Market.products, List<Buy>> tradeDemand = new Dictionary<Market.products, List<Buy>>();
 
-		public Country() { 
-		
+		public Country() {
+
 		}
 
 		public Country(string name, Color color) {

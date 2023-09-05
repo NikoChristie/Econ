@@ -27,20 +27,21 @@ namespace Econ {
 		private static readonly char[] loader = { '/', '-', '\\', '|' };
 		private static DateTime time = DateTime.Now;
 
-		#region Sprites
-		public static Sprite beeg = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\beeg_yoshi.bmp");
-		private static MaskedSprite factory = new MaskedSprite(@"C:\Users\nikol\source\repos\Econ\Econ\Factory.bmp", new Box[] { new Box(new Point(1, 2), new Size(4, 12)), new Box(new Point(5, 7), new Size(10, 8))});
-		private  static MaskedSprite caravan = new MaskedSprite(@"C:\Users\nikol\source\repos\Econ\Econ\CaravanLand.bmp", new Box[] { new Box(new Point(1, 3), new Size(10, 10)), new Box(new Point(11, 11), new Size(4, 1)), new Box(new Point(3, 12), new Size(3, 2)) });
-		private  static Sprite plus  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\+.bmp");
-		private  static Sprite one   = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\1.bmp");
-		private  static Sprite two   = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\2.bmp");
-		private  static Sprite three = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\3.bmp");
-		private  static Sprite four  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\4.bmp");
-		private  static Sprite five  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\5.bmp");
-		private  static Sprite six   = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\6.bmp");
-		private  static Sprite seven = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\7.bmp");
-		private  static Sprite eight = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\8.bmp");
-		private  static Sprite nine  = new Sprite(@"C:\Users\nikol\source\repos\Econ\Econ\9.bmp");
+        #region Sprites
+        public static Sprite beeg = new Sprite(@"../../beeg_yoshi.bmp");
+        //public static Sprite beeg = new Sprite(@"E:\Users\nikol\source\repos\Econ\Econ\beeg_yoshi.bmp");
+        private static MaskedSprite factory = new MaskedSprite(@"../../Factory.bmp", new Box[] { new Box(new Point(1, 2), new Size(4, 12)), new Box(new Point(5, 7), new Size(10, 8))});
+		private  static MaskedSprite caravan = new MaskedSprite(@"../../CaravanLand.bmp", new Box[] { new Box(new Point(1, 3), new Size(10, 10)), new Box(new Point(11, 11), new Size(4, 1)), new Box(new Point(3, 12), new Size(3, 2)) });
+		private  static Sprite plus  = new Sprite(@"../../+.bmp");
+		private  static Sprite one   = new Sprite(@"../../1.bmp");
+		private  static Sprite two   = new Sprite(@"../../2.bmp");
+		private  static Sprite three = new Sprite(@"../../3.bmp");
+		private  static Sprite four  = new Sprite(@"../../4.bmp");
+		private  static Sprite five  = new Sprite(@"../../5.bmp");
+		private  static Sprite six   = new Sprite(@"../../6.bmp");
+		private  static Sprite seven = new Sprite(@"../../7.bmp");
+		private  static Sprite eight = new Sprite(@"../../8.bmp");
+		private  static Sprite nine  = new Sprite(@"../../9.bmp");
         #endregion Sprites
 
         public static class Camera {
@@ -53,7 +54,8 @@ namespace Econ {
 		}
 
 		public static void Main(string[] args) {
-			
+            // C:\Users\12044\Desktop\Portfolio\Econ\Econ\bin\Debug   
+            Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
 			Mouse.ShowCursor = true;
 			Screen = Video.SetVideoMode(wwidth, wheight, 32, false, false, false, true);
 			
@@ -88,8 +90,9 @@ namespace Econ {
 			
 			if (args.Key == Key.Escape) Screen.Close();
 			else if (args.Key == Key.Return) {
+				Market.info();
 				//World.Save();
-				JsonConvert.DeserializeObject<Save>(File.ReadAllText("save.json")).Load();
+				//JsonConvert.DeserializeObject<Save>(File.ReadAllText("save.json")).Load();
 				
 				/*
 				string map_data = "";
