@@ -432,6 +432,7 @@ namespace Econ {
 									}
 									Screen.Blit(number, new Point(x, y));
 									
+
 									//draw_tile.Draw(Program.Screen, Color.FromArgb(50, World.map[xx, yy].owner.color.R, World.map[xx, yy].owner.color.G, World.map[xx, yy].owner.color.B), true, true);
 								}
 							}
